@@ -1,11 +1,17 @@
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+import { registerUser, resetRegisterStatus } from './state/slice.js';
 import './userForms.css';
 
 const Register = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
-    const [passwordMessage, setPasswordMessage] = useState('');
+    const registerStatus = useSelector(state => state.user.registerStatus);
+
+    const [passwordMatch, setPasswordMatch] = useState(true);
+    const [success, setSuccess] = useState(false);
 
     const firstNameRef = useRef();
     const lastNameRef = useRef();
@@ -16,15 +22,48 @@ const Register = () => {
     const checkPassword = () => {
         if (passwordRef.current.value.length === 0) return;
         if (passwordRef.current.value === passwordCheckRef.current.value) {
-            setPasswordMessage('passwords match');
+            setPasswordMatch(true);
         } else {
-            setPasswordMessage('passwords do not match');
+            setPasswordMatch(false);
         }
+    };
+
+    useEffect(() => {
+        if (registerStatus === 'success') {
+            setSuccess(true);
+            dispatch(resetRegisterStatus());
+        }
+    }, [registerStatus, dispatch]);
+
+    const handleRegister = () => {
+        if (firstNameRef.current.value.length === 0 || lastNameRef.current.value.length === 0 || emailRef.current.value.length === 0 || passwordRef.current.value.length === 0) return;
+
+        const newUser = {
+            firstName: firstNameRef.current.value,
+            lastName: lastNameRef.current.value,
+            email: emailRef.current.value,
+            password: passwordRef.current.value
+        };
+        dispatch(registerUser(newUser));
+    };
+
+    const handleCancel = () => {
+        navigate('/');
     };
 
     return (
         <>
-            <div className="userFormContainer">
+            {
+                success
+                ?
+                <div className="userStatusContainer">
+                    <p className='userStatusMessage'>
+                        Congratulations, you have successfully registered, you may now proceed to log in.
+                    </p>
+                    <Link to={'/login'}>Login</Link>
+                </div>
+                :
+                <div className="userFormContainer">
                 <h2 className="userFormName">Register New User</h2>
                 <div className="userInputContainer">
                     <input
@@ -32,6 +71,7 @@ const Register = () => {
                     className='userInputField'
                     ref={firstNameRef}
                     placeholder='first name'
+                    required
                     />
                 </div>
                 <div className="userInputContainer">
@@ -40,6 +80,7 @@ const Register = () => {
                     className='userInputField'
                     ref={lastNameRef}
                     placeholder='last name'
+                    required
                     />
                 </div>
                 <div className="userInputContainer">
@@ -48,6 +89,7 @@ const Register = () => {
                     className='userInputField'
                     ref={emailRef}
                     placeholder='email address'
+                    required
                     />
                 </div>
                 <div className="userInputContainer">
@@ -57,6 +99,7 @@ const Register = () => {
                     ref={passwordRef}
                     placeholder='password'
                     onChange={checkPassword}
+                    required
                     />
                 </div>
                 <div className="userInputContainer">
@@ -67,13 +110,14 @@ const Register = () => {
                     placeholder='password repeat'
                     onChange={checkPassword}
                     />
-                    <span className='userInputAlert'>{passwordMessage}</span>
+                    {!passwordMatch ? <span className='userInputAlert'>passwords don't match</span> : ''}
                 </div>
                 <div className="userControlsContainer">
-                    <button className='userConfirmButton'>Register</button>
-                    <button className="userCancelButton">Cancel</button>
+                    <button className='userConfirmButton' onClick={handleRegister}>Register</button>
+                    <button className="userCancelButton" onClick={handleCancel}>Cancel</button>
                 </div>
             </div>
+            }
         </>
     );
 }

@@ -135,8 +135,9 @@ const userSlice = createSlice({
             state.logMessage = action.payload.logMessage;
         })
         .addCase(loginUser.rejected, (state, action) => {
-            console.error("Login failed:", action.error.message);
+            console.log("Login failed:", action.error.message);
             state.loggedIn = false;
+            console.log(action.error)
             state.logMessage = action.error.message;
         })
         .addCase(registerUser.pending, (state) => {
