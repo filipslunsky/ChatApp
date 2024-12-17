@@ -71,7 +71,7 @@ const Login = () => {
                 {logMessage && <p style={{ color: 'red' }}>{logMessage}</p>}
                 <div className="userStatusContainer">
                     <p className='userStatusMessage'>You don't have an account yet?</p>
-                    <Link to='/user/register'>CREATE ACCOUNT</Link>
+                    <Link to='/user/register'>Create a New Account</Link>
                 </div>
             </div>
         </>
