@@ -44,7 +44,7 @@ const getHeaders = () => {
 
 export const loginUser = createAsyncThunk(
     'user/loginUser',
-    async (credentials) => {
+    async (credentials, { rejectWithValue }) => {
         try {
             const response = await axios.post(`${USER_URL}/login`, credentials);
 
@@ -60,8 +60,13 @@ export const loginUser = createAsyncThunk(
                 throw new Error('User does not exist');
             }
         } catch (error) {
-            console.error('Login failed with error:', error.response?.data?.message || error.message);
-            throw new Error(error.response.data.message || 'Login failed - check your password');
+            console.error('Login failed with error:', error.message);
+
+            if (error.response && error.response.data && error.response.data.message) {
+                return rejectWithValue(error.response.data.message);
+            } else {
+                return rejectWithValue('Login failed - check your credentials or try again later');
+            }
         }
     }
 );
@@ -135,10 +140,9 @@ const userSlice = createSlice({
             state.logMessage = action.payload.logMessage;
         })
         .addCase(loginUser.rejected, (state, action) => {
-            console.log("Login failed:", action.error.message);
+            console.error("Login failed:", action.payload || "An unexpected error occurred");
             state.loggedIn = false;
-            console.log(action.error)
-            state.logMessage = action.error.message;
+            state.logMessage = action.payload || "An unexpected error occurred";
         })
         .addCase(registerUser.pending, (state) => {
             state.registerStatus = 'loading';

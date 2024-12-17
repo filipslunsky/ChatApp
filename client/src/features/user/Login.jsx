@@ -68,7 +68,7 @@ const Login = () => {
                     <button className='userConfirmButton' onClick={handleLogin}>Login</button>
                     <button className="userCancelButton" onClick={handleCancel}>Cancel</button>
                 </div>
-                {error && <p style={{ color: 'red' }}>{logMessage}</p>}
+                {logMessage && <p style={{ color: 'red' }}>{logMessage}</p>}
                 <div className="userStatusContainer">
                     <p className='userStatusMessage'>You don't have an account yet?</p>
                     <Link to='/user/register'>CREATE ACCOUNT</Link>
