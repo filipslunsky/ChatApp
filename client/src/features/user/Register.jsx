@@ -37,6 +37,8 @@ const Register = () => {
 
     const handleRegister = () => {
         if (firstNameRef.current.value.length === 0 || lastNameRef.current.value.length === 0 || emailRef.current.value.length === 0 || passwordRef.current.value.length === 0) return;
+        
+        if (!passwordMatch) return;
 
         const newUser = {
             firstName: firstNameRef.current.value,
@@ -60,7 +62,7 @@ const Register = () => {
                     <p className='userStatusMessage'>
                         Congratulations, you have successfully registered, you may now proceed to log in.
                     </p>
-                    <Link to={'/login'}>Login</Link>
+                    <Link to={'/user/login'}>Login</Link>
                 </div>
                 :
                 <div className="userFormContainer">

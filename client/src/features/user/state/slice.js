@@ -159,7 +159,7 @@ const userSlice = createSlice({
         })
         .addCase(editUser.rejected, (state) => {
             state.editStatus = 'failed';
-            state.logMessage = action.error.message;
+            // state.logMessage = action.error.message;
         })
         .addCase(editUser.fulfilled, (state, action) => {
             state.editStatus = 'success';
