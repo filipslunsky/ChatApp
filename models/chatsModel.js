@@ -1,12 +1,12 @@
 //  // create new chat
-// change chat name
-// delete chat
+// // change chat name
+// // delete chat
 
 
 // add user to chat
 // remove user from chat
 
-// get all participants for chat
+// get all participants by chat id
 
 // get all chats by participants email
 
@@ -37,7 +37,6 @@ const _addNewChat = async (email, chatName) => {
                 chat_id: chatId,
                 user_id: user.user_id
             });
-
             return { 
                 success: true, 
                 message: 'Chat successfully created and user added as a participant',
@@ -52,9 +51,12 @@ const _addNewChat = async (email, chatName) => {
 
 const _updateChatName = async (chatId, chatName) => {
     try {
-        db('chats')
-        .update({chat_name: chatName})
-        .where({chat_id: chatId});
+        const updatedRows = await db('chats')
+            .update({ chat_name: chatName })
+            .where({ chat_id: chatId });
+        if (updatedRows === 0) {
+            return { success: false, message: 'Chat not found or no changes made' };
+        }
         return { success: true, chatId, chatName };
     } catch (error) {
         console.error('Transaction error:', error);
@@ -62,8 +64,27 @@ const _updateChatName = async (chatId, chatName) => {
     }
 };
 
+const _deleteChat = async (chatId) => {
+    try {
+        return await db.transaction(async (trx) => {
+            const chatExists = await trx('chats')
+                .where({ chat_id: chatId })
+                .first();
+            if (!chatExists) {
+                return { success: false, message: 'Chat does not exist' };
+            }
+            await trx('chats').where({chat_id: chatId}).delete();
+            return { success: true, message: 'Chat successfully deleted' };
+        });
+    } catch (error) {
+        console.error('Transaction error:', error);
+        return { success: false, message: `Error deleting chat: ${error.message}` };
+    }
+};
+
 
 module.exports = {
     _addNewChat,
     _updateChatName,
+    _deleteChat,
 };
