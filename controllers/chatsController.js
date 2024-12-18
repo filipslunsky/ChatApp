@@ -5,6 +5,7 @@ const {
     _addUserToChat,
     _removeUserFromChat,
     _getParticipantsByChatId,
+    _getChatsByParticipantEmail,
 } = require('../models/chatsModel.js');
 
 const addNewChat = async (req, res) => {
@@ -82,10 +83,25 @@ const removeUserFromChat = async (req, res) => {
     } 
 };
 
-const getParticipantsByChatId = async (res, req) => {
+const getParticipantsByChatId = async (req, res) => {
     const { chatId } = req.body;
     try {
         const data = await _getParticipantsByChatId(chatId);
+        if (data.success) {
+            res.status(200).json(data);
+        } else {
+            res.status(400).json(data);
+        };
+    } catch (error) {
+        console.log('Error:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+};
+
+const getChatsByParticipantEmail = async (req, res) => {
+    const { email } = req.body;
+    try {
+        const data = await _getChatsByParticipantEmail(email);
         if (data.success) {
             res.status(200).json(data);
         } else {
@@ -104,4 +120,5 @@ module.exports = {
     addUserToChat,
     removeUserFromChat,
     getParticipantsByChatId,
+    getChatsByParticipantEmail,
 };

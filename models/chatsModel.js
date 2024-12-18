@@ -1,14 +1,3 @@
-//  // create new chat
-// // change chat name
-// // delete chat
-
-// // add user to chat
-// // remove user from chat
-
-// get all participants by chat id
-
-// get all chats by participants email
-
 const { db } = require('../config/db.js');
 
 const _addNewChat = async (email, chatName) => {
@@ -193,6 +182,49 @@ const _getParticipantsByChatId = async (chatId) => {
     }
 };
 
+const _getChatsByParticipantEmail = async (email) => {
+    try {
+        return await db.transaction(async (trx) => {
+            const user = await trx('users')
+                .select('user_id')
+                .where({ email })
+                .first();
+
+            if (!user) {
+                return { success: false, message: 'User not found' };
+            }
+
+            const userId = user.user_id;
+
+            const chats = await trx('chat_participants')
+                .select('chat_participants.chat_id', 'chats.chat_name', 'chats.created_at')
+                .join('chats', 'chat_participants.chat_id', '=', 'chats.chat_id')
+                .where({ 'chat_participants.user_id': userId });
+
+            const chatsWithParticipants = await Promise.all(
+                chats.map(async (chat) => {
+                    const participants = await trx('chat_participants')
+                        .select('users.first_name', 'users.last_name', 'users.email')
+                        .join('users', 'chat_participants.user_id', '=', 'users.user_id')
+                        .where({ 'chat_participants.chat_id': chat.chat_id });
+
+                    return {
+                        chat_id: chat.chat_id,
+                        chat_name: chat.chat_name,
+                        created_at: chat.created_at,
+                        participants,
+                    };
+                })
+            );
+
+            return { success: true, chats: chatsWithParticipants };
+        });
+    } catch (error) {
+        console.error('Transaction error:', error);
+        return { success: false, message: `Error fetching chats: ${error.message}` };
+    }
+};
+
 module.exports = {
     _addNewChat,
     _updateChatName,
@@ -200,4 +232,5 @@ module.exports = {
     _addUserToChat,
     _removeUserFromChat,
     _getParticipantsByChatId,
+    _getChatsByParticipantEmail,
 };
