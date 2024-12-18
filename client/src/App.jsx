@@ -9,6 +9,7 @@ import Login from './features/user/Login';
 import UserEdit from './features/user/UserEdit';
 import About from './features/general/About';
 import Chat from './features/chat/Chat';
+import ChatDetail from './features/chat/ChatDetail';
 import './App.css';
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
             <Route path='/user/info' element={<User />} />
             <Route path='/user/edit' element={<UserEdit />} />
             <Route path='/chat' element={<Chat />} />
+            <Route path='/chat/:chatId' element={<ChatDetail />} />
           </Route>
         </Routes>
       </BrowserRouter>
