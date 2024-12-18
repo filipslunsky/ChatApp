@@ -27,7 +27,7 @@ const Chat = () => {
                                 {
                                     item.chat_name === null
                                     ?
-                                    'unnamed chat'
+                                    'Direct Chat'
                                     :
                                     item.chat_name
                                 }
