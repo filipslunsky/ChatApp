@@ -12,7 +12,7 @@ const About = () => {
                 <a target="_blank" className="externalAnchor" href="https://github.com/filipslunsky">My GitHub</a>
                 <a target="_blank" className="externalAnchor" href="https://www.linkedin.com/in/filipslunsky/">Connect with me on my LinkedIn</a>
                 <hr />
-                <a target="_blank" className="externalAnchor" href="https://github.com/filipslunsky/e-commerce">GitHub Repository for this E-Shop</a>
+                <a target="_blank" className="externalAnchor" href="https://github.com/filipslunsky/ChatApp">GitHub Repository for ChutUp</a>
             </div>
         </>
     );
