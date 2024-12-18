@@ -2,6 +2,8 @@ const {
     _addNewChat,
     _updateChatName,
     _deleteChat,
+    _addUserToChat,
+    _removeUserFromChat,
 } = require('../models/chatsModel.js');
 
 const addNewChat = async (req, res) => {
@@ -49,8 +51,40 @@ const deleteChat = async (req, res) => {
     }
 };
 
+const addUserToChat = async (req, res) => {
+    const { email, chatId } = req.body;
+    try {
+        const data = await _addUserToChat(email, chatId);
+        if (data.success) {
+            res.status(200).json(data);
+        } else {
+            res.status(400).json(data);
+        };
+    } catch (error) {
+        console.log('Error:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    } 
+};
+
+const removeUserFromChat = async (req, res) => {
+    const { email, chatId } = req.body;
+    try {
+        const data = await _removeUserFromChat(email, chatId);
+        if (data.success) {
+            res.status(200).json(data);
+        } else {
+            res.status(400).json(data);
+        };
+    } catch (error) {
+        console.log('Error:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    } 
+};
+
 module.exports = {
     addNewChat,
     updateChatName,
     deleteChat,
+    addUserToChat,
+    removeUserFromChat,
 };

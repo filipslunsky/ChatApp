@@ -2,9 +2,8 @@
 // // change chat name
 // // delete chat
 
-
-// add user to chat
-// remove user from chat
+// // add user to chat
+// // remove user from chat
 
 // get all participants by chat id
 
@@ -23,7 +22,6 @@ const _addNewChat = async (email, chatName) => {
             if (!user) {
                 return { success: false, message: 'User not found' };
             };
-
             const [chat] = await trx('chats')
                 .insert({
                     chat_name: chatName,
@@ -82,9 +80,98 @@ const _deleteChat = async (chatId) => {
     }
 };
 
+const _addUserToChat = async (email, chatId) => {
+    try {
+        return await db.transaction(async (trx) => {
+            const user = await trx('users')
+                .select('user_id')
+                .where({ email })
+                .first();
+
+            if (!user) {
+                return { success: false, message: 'User not found' };
+            }
+            const userId = user.user_id;
+
+            const chat = await trx('chats')
+                .select('chat_id')
+                .where({ chat_id: chatId })
+                .first();
+
+            if (!chat) {
+                return { success: false, message: 'Chat not found' };
+            }
+
+            const isParticipant = await trx('chat_participants')
+                .where({ user_id: userId, chat_id: chatId })
+                .first();
+
+            if (isParticipant) {
+                return { success: false, message: 'User is already a participant of the chat' };
+            }
+
+            await trx('chat_participants').insert({
+                user_id: userId,
+                chat_id: chatId
+            });
+
+            return { success: true, message: 'User successfully added to the chat' };
+        });
+    } catch (error) {
+        console.error('Transaction error:', error);
+        return { success: false, message: `Error adding user to chat: ${error.message}` };
+    }
+};
+
+const _removeUserFromChat = async (email, chatId) => {
+    try {
+        return await db.transaction(async (trx) => {
+            const user = await trx('users')
+                .select('user_id')
+                .where({ email })
+                .first();
+
+            if (!user) {
+                return { success: false, message: 'User not found' };
+            }
+            const userId = user.user_id;
+
+            const chat = await trx('chats')
+                .select('chat_id')
+                .where({ chat_id: chatId })
+                .first();
+
+            if (!chat) {
+                return { success: false, message: 'Chat not found' };
+            }
+
+            const isParticipant = await trx('chat_participants')
+                .where({ user_id: userId, chat_id: chatId })
+                .first();
+
+            if (!isParticipant) {
+                return { success: false, message: 'User is not a participant of the chat' };
+            }
+
+            await trx('chat_participants')
+                .where({
+                    user_id: userId,
+                    chat_id: chatId
+                })
+                .delete();
+
+            return { success: true, message: 'User successfully removed from the chat' };
+        });
+    } catch (error) {
+        console.error('Transaction error:', error);
+        return { success: false, message: `Error adding user to chat: ${error.message}` };
+    }
+};
 
 module.exports = {
     _addNewChat,
     _updateChatName,
     _deleteChat,
+    _addUserToChat,
+    _removeUserFromChat,
 };
