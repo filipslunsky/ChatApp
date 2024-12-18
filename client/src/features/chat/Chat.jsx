@@ -36,7 +36,11 @@ const Chat = () => {
                                 {
                                     item.participants.map((person, index) => {
                                         return (
+                                            person.email !== user.email
+                                            ?
                                             <span className="chatParticipant" key={index}>{`${person.first_name} ${person.last_name}`}</span>
+                                            :
+                                            ''
                                         )
                                     })
                                 }
