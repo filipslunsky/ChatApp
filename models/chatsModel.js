@@ -168,10 +168,36 @@ const _removeUserFromChat = async (email, chatId) => {
     }
 };
 
+const _getParticipantsByChatId = async (chatId) => {
+    try {
+        return await db.transaction(async (trx) => {
+            const chat = await trx('chats')
+                .select('chat_id')
+                .where({ chat_id: chatId })
+                .first();
+
+            if (!chat) {
+                return { success: false, message: 'Chat not found' };
+            }
+
+            const chatParticipants = await trx('chat_participants')
+                .select('chat_participants.user_id', 'users.first_name', 'users.last_name', 'users.email')
+                .join('users', 'chat_participants.user_id', '=', 'users.user_id')
+                .where({ 'chat_participants.chat_id': chatId });
+
+            return { success: true, chatParticipants };
+        });
+    } catch (error) {
+        console.error('Transaction error:', error);
+        return { success: false, message: `Error fetching chat participants: ${error.message}` };
+    }
+};
+
 module.exports = {
     _addNewChat,
     _updateChatName,
     _deleteChat,
     _addUserToChat,
     _removeUserFromChat,
+    _getParticipantsByChatId,
 };

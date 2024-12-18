@@ -6,6 +6,7 @@ const {
     deleteChat,
     addUserToChat,
     removeUserFromChat,
+    getParticipantsByChatId,
 } = require('../controllers/chatsController');
 
 const chatsRouter = Router();
@@ -16,5 +17,7 @@ chatsRouter.post('/delete', authenticateLoginToken, deleteChat);
 
 chatsRouter.post('/participants/new', authenticateLoginToken, addUserToChat);
 chatsRouter.post('/participants/delete', authenticateLoginToken, removeUserFromChat);
+
+chatsRouter.post('/participants/all', authenticateLoginToken, getParticipantsByChatId);
 
 module.exports = chatsRouter;
