@@ -1,9 +1,39 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { io } from 'socket.io-client';
+import axios from 'axios';
 
 let socket = null;
 
 const BASE_URL = `${import.meta.env.VITE_API_URL}`;
+
+export const getMessages = createAsyncThunk(
+    'socket/getMessages',
+    async ({ chatId }, { rejectWithValue }) => {
+        try {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                throw new Error('Authorization token is missing');
+            }
+
+            const response = await axios.post(
+                `${BASE_URL}/messages/all`,
+                { chatId },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        'Content-Type': 'application/json',
+                    },
+                }
+            );
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching messages:', error.message);
+            return rejectWithValue(
+                error.response?.data?.message || 'Failed to fetch messages'
+            );
+        }
+    }
+);
 
 const socketSlice = createSlice({
     name: 'socket',
@@ -32,6 +62,18 @@ const socketSlice = createSlice({
         setError(state, action) {
             state.error = action.payload;
         },
+    },
+    extraReducers: (builder) => {
+        builder
+            .addCase(getMessages.pending, (state) => {
+                state.error = null;
+            })
+            .addCase(getMessages.fulfilled, (state, action) => {
+                state.messages = action.payload;
+            })
+            .addCase(getMessages.rejected, (state, action) => {
+                state.error = action.payload || 'Failed to fetch messages';
+            });
     },
 });
 

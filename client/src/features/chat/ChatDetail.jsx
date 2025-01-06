@@ -1,7 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { initializeSocket, sendMessage, leaveChat } from './state/socketSlice.js';
+import { initializeSocket, sendMessage, leaveChat, getMessages } from './state/socketSlice.js';
 
 const ChatDetail = () => {
     const navigate = useNavigate();
@@ -13,6 +13,10 @@ const ChatDetail = () => {
     const [newMessage, setNewMessage] = useState('');
 
     const { chatId } = useParams();
+
+    useEffect(() => {
+        dispatch(getMessages({ chatId }));
+    }, [dispatch, chatId]);
 
     useEffect(() => {
         dispatch(initializeSocket(chatId));
@@ -35,11 +39,12 @@ const ChatDetail = () => {
     return (
         <>
             <button onClick={handleBackClick}>Go back</button>
-            <h2>Chat id: {chatId}</h2>
+            <h2>Chat ID: {chatId}</h2>
             <div>
                 {messages.map((msg, index) => (
-                    <div key={index}>
-                        <strong>{msg.user_id}:</strong> {msg.message}
+                    // Use a combination of message_id and index to ensure uniqueness
+                    <div key={msg.message_id || `${index}-${msg.user_id}`}>
+                        <strong>{msg.user_id === user.userId ? 'You' : `User ${msg.user_id}`}:</strong> {msg.message}
                     </div>
                 ))}
             </div>
@@ -52,6 +57,6 @@ const ChatDetail = () => {
             <button onClick={handleSendMessage}>Send</button>
         </>
     );
-}
- 
+};
+
 export default ChatDetail;
