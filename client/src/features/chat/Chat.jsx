@@ -14,10 +14,6 @@ const Chat = () => {
         dispatch(getChats(user.email));
     }, []);
 
-    useEffect(() => {
-        console.log(chats);
-    }, []);
-
     const handleClick = (chatId) => {
         navigate(`/chat/${chatId}`);
     };

@@ -6,20 +6,16 @@ const handleSocketEvents = (io, socket) => {
         console.log(`User ${socket.id} joined chat ${chatId}`);
     });
 
-    socket.on('send_message', async ({ chatId, message }) => {
-        const timestamp = new Date();
-        const userId = socket.id;
-
+    socket.on('send_message', async ({ chatId, userId, message }) => {
         try {
             const savedMessage = await insertMessage(chatId, userId, message);
 
-            io.to(chatId).emit('receive_message', {
-                ...savedMessage,
-                timestamp
-            });
+            io.to(chatId).emit('receive_message', savedMessage);
+
             console.log(`Message sent in chat ${chatId}:`, savedMessage);
         } catch (error) {
             console.error('Error saving message:', error);
+
             socket.emit('error', 'Error saving message');
         }
     });
@@ -31,4 +27,3 @@ const handleSocketEvents = (io, socket) => {
 };
 
 module.exports = { handleSocketEvents };
-

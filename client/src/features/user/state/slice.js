@@ -8,6 +8,7 @@ const initialState = {
         firstName: '',
         lastName: '',
         email: '',
+        userId: null,
     },
     token: null,
     loggedIn: false,
@@ -37,8 +38,8 @@ const loadUserFromLocalStorage = () => {
 const getHeaders = () => {
     const token = localStorage.getItem('token');
     return {
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
     };
 };
 
@@ -48,12 +49,12 @@ export const loginUser = createAsyncThunk(
         try {
             const response = await axios.post(`${USER_URL}/login`, credentials);
 
-            const { success, passwordMatch, firstName, lastName, email, token } = response.data;
+            const { success, passwordMatch, firstName, lastName, email, userId, token } = response.data;
 
             if (success && passwordMatch) {
-                localStorage.setItem('user', JSON.stringify({ firstName, lastName, email }));
+                localStorage.setItem('user', JSON.stringify({ firstName, lastName, email, userId }));
                 localStorage.setItem('token', token);
-                return { firstName, lastName, email, token, logMessage: 'Logged in successfully' };
+                return { firstName, lastName, email, userId, token, logMessage: 'Logged in successfully' };
             } else if (success && !passwordMatch) {
                 throw new Error('Wrong password');
             } else {
@@ -79,16 +80,18 @@ export const registerUser = createAsyncThunk('user/registerUser', async (newUser
 export const editUser = createAsyncThunk('user/editUser', async (editItem) => {
     const headers = getHeaders();
     const response = await axios.put(USER_URL, editItem, { headers });
-    
+
     if (response.data.success) {
         const { firstName, lastName } = response.data;
         const userJSON = localStorage.getItem('user');
         const user = userJSON ? JSON.parse(userJSON) : {};
-        
+
         localStorage.setItem('user', JSON.stringify({
             ...user,
             firstName,
-            lastName
+            lastName,
+            email: user.email,
+            userId: user.userId,
         }));
 
         return response.data;
@@ -107,13 +110,12 @@ export const deleteUser = createAsyncThunk('user/delete', async (deleteItem, { r
     }
 });
 
-
 const userSlice = createSlice({
     name: 'user',
     initialState: loadUserFromLocalStorage(),
     reducers: {
         logoutUser: (state) => {
-            state.user = { firstName: '', lastName: '', email: '' };
+            state.user = { firstName: '', lastName: '', email: '', userId: null };
             state.loggedIn = false;
             state.token = null;
             state.logMessage = null;
@@ -129,49 +131,51 @@ const userSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-        .addCase(loginUser.fulfilled, (state, action) => {
-            state.user = {
-                firstName: action.payload.firstName,
-                lastName: action.payload.lastName,
-                email: action.payload.email,
-            };
-            state.token = action.payload.token;
-            state.loggedIn = true;
-            state.logMessage = action.payload.logMessage;
-        })
-        .addCase(loginUser.rejected, (state, action) => {
-            console.error("Login failed:", action.payload || "An unexpected error occurred");
-            state.loggedIn = false;
-            state.logMessage = action.payload || "An unexpected error occurred";
-        })
-        .addCase(registerUser.pending, (state) => {
-            state.registerStatus = 'loading';
-        })
-        .addCase(registerUser.rejected, (state) => {
-            state.registerStatus = 'failed';
-            state.logMessage = action.error.message;
-        })
-        .addCase(registerUser.fulfilled, (state) => {
-            state.registerStatus = 'success';
-        })
-        .addCase(editUser.pending, (state) => {
-            state.editStatus = 'loading';
-        })
-        .addCase(editUser.rejected, (state) => {
-            state.editStatus = 'failed';
-            // state.logMessage = action.error.message;
-        })
-        .addCase(editUser.fulfilled, (state, action) => {
-            state.editStatus = 'success';
-            state.user = {
-                firstName: action.payload.firstName || state.user.firstName || '',
-                lastName: action.payload.lastName || state.user.lastName || '',
-                email: state.user.email || ''
-            };
-        })
-        .addCase(deleteUser.rejected, (state, action) => {
-            state.logMessage = action.payload || 'Failed to delete user';
-        })
+            .addCase(loginUser.fulfilled, (state, action) => {
+                state.user = {
+                    firstName: action.payload.firstName,
+                    lastName: action.payload.lastName,
+                    email: action.payload.email,
+                    userId: action.payload.userId,
+                };
+                state.token = action.payload.token;
+                state.loggedIn = true;
+                state.logMessage = action.payload.logMessage;
+            })
+            .addCase(loginUser.rejected, (state, action) => {
+                console.error('Login failed:', action.payload || 'An unexpected error occurred');
+                state.loggedIn = false;
+                state.logMessage = action.payload || 'An unexpected error occurred';
+            })
+            .addCase(registerUser.pending, (state) => {
+                state.registerStatus = 'loading';
+            })
+            .addCase(registerUser.rejected, (state) => {
+                state.registerStatus = 'failed';
+                state.logMessage = action.error.message;
+            })
+            .addCase(registerUser.fulfilled, (state) => {
+                state.registerStatus = 'success';
+            })
+            .addCase(editUser.pending, (state) => {
+                state.editStatus = 'loading';
+            })
+            .addCase(editUser.rejected, (state, action) => {
+                state.editStatus = 'failed';
+                state.logMessage = action.payload || 'Failed to edit user';
+            })
+            .addCase(editUser.fulfilled, (state, action) => {
+                state.editStatus = 'success';
+                state.user = {
+                    firstName: action.payload.firstName || state.user.firstName || '',
+                    lastName: action.payload.lastName || state.user.lastName || '',
+                    email: state.user.email || '',
+                };
+            })
+            .addCase(deleteUser.rejected, (state, action) => {
+                state.logMessage = action.payload || 'Failed to delete user';
+                console.error('Delete user failed:', action.payload);
+            });
     },
 });
 

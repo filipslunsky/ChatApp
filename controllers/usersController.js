@@ -39,7 +39,7 @@ const loginUser = async (req, res) => {
                     ACCESS_TOKEN_SECRET,
                     { expiresIn: '1d' }
                 );
-                res.json({success: true, passwordMatch: true, firstName: data.firstName, lastName: data.lastName, email: data.email, token});
+                res.json({success: true, passwordMatch: true, firstName: data.firstName, lastName: data.lastName, email: data.email, userId: data.userId, token});
             } else {
                 res.json({success: true, passwordMatch: false})
             }
