@@ -51,9 +51,9 @@ export const initializeSocket = (chatId) => (dispatch) => {
     });
 };
 
-export const sendMessage = (chatId, message) => () => {
+export const sendMessage = (chatId, message, userId) => () => {
     if (socket) {
-        socket.emit('send_message', { chatId, message });
+        socket.emit('send_message', { chatId, message, userId });
     }
 };
 

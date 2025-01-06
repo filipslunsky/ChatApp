@@ -8,6 +8,7 @@ const ChatDetail = () => {
     const dispatch = useDispatch();
 
     const messages = useSelector((state) => state.socket.messages);
+    const user = useSelector((state) => state.user.user);
 
     const [newMessage, setNewMessage] = useState('');
 
@@ -23,7 +24,7 @@ const ChatDetail = () => {
 
     const handleSendMessage = () => {
         if (!newMessage.trim()) return;
-        dispatch(sendMessage(chatId, newMessage));
+        dispatch(sendMessage(chatId, newMessage, user.userId));
         setNewMessage('');
     };
 
