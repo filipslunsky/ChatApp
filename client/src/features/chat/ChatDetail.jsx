@@ -41,12 +41,11 @@ const ChatDetail = () => {
             <button onClick={handleBackClick}>Go back</button>
             <h2>Chat ID: {chatId}</h2>
             <div>
-                {messages.map((msg, index) => (
-                    // Use a combination of message_id and index to ensure uniqueness
-                    <div key={msg.message_id || `${index}-${msg.user_id}`}>
-                        <strong>{msg.user_id === user.userId ? 'You' : `User ${msg.user_id}`}:</strong> {msg.message}
-                    </div>
-                ))}
+            {messages.map((msg, index) => (
+                <div key={msg.message_id}>
+                    <strong>{msg.user_id === user.userId ? 'You' : `User ${msg.user_id}`}:</strong> {msg.message}
+                </div>
+            ))}
             </div>
             <input
                 type="text"

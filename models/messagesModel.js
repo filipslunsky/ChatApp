@@ -2,11 +2,13 @@ const { db } = require('../config/db.js');
 
 const insertMessage = async (chatId, userId, message) => {
     try {
-        const result = await db('messages').insert({
-            chat_id: chatId,
-            user_id: userId,
-            message: message
-        }).returning('message_id', 'chat_id', 'user_id', 'message', 'created_at');
+        const result = await db('messages')
+            .insert({
+                chat_id: chatId,
+                user_id: userId,
+                message: message,
+            })
+            .returning(['message_id', 'chat_id', 'user_id', 'message', 'created_at']);
         
         return result[0];
     } catch (error) {
@@ -20,7 +22,7 @@ const _getMessagesByChatId = async (chatId) => {
         const result = await db('messages')
             .where({ chat_id: chatId })
             .orderBy('created_at', 'asc')
-            .returning('message_id', 'chat_id', 'user_id', 'message', 'created_at');
+            .select('message_id', 'chat_id', 'user_id', 'message', 'created_at');
         
         return result;
     } catch (error) {

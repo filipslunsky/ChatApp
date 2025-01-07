@@ -57,7 +57,12 @@ const socketSlice = createSlice({
             }
         },
         addMessage(state, action) {
-            state.messages.push(action.payload);
+            const exists = state.messages.some(
+                (msg) => msg.message_id === action.payload.message_id
+            );
+            if (!exists) {
+                state.messages.push(action.payload);
+            }
         },
         setError(state, action) {
             state.error = action.payload;
@@ -82,10 +87,21 @@ export const { connectSocket, disconnectSocket, addMessage, setError } = socketS
 export const initializeSocket = (chatId) => (dispatch) => {
     dispatch(connectSocket());
 
+    // Emit the join_chat event
     socket.emit('join_chat', { chatId });
 
+    // Remove existing listeners before adding a new one to prevent duplicates
+    socket.off('receive_message'); // Remove any previous listener for receive_message
+    socket.off('error'); // Remove any previous listener for errors
+
+    // Add listeners
     socket.on('receive_message', (message) => {
-        dispatch(addMessage(message));
+        console.log('Received message:', message);
+        if (message && message.user_id && message.message) {
+            dispatch(addMessage(message));
+        } else {
+            console.error('Received invalid message:', message);
+        }
     });
 
     socket.on('error', (error) => {
