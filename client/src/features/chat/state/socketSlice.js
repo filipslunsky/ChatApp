@@ -87,16 +87,12 @@ export const { connectSocket, disconnectSocket, addMessage, setError } = socketS
 export const initializeSocket = (chatId) => (dispatch) => {
     dispatch(connectSocket());
 
-    // Emit the join_chat event
     socket.emit('join_chat', { chatId });
 
-    // Remove existing listeners before adding a new one to prevent duplicates
-    socket.off('receive_message'); // Remove any previous listener for receive_message
-    socket.off('error'); // Remove any previous listener for errors
+    socket.off('receive_message');
+    socket.off('error');
 
-    // Add listeners
     socket.on('receive_message', (message) => {
-        console.log('Received message:', message);
         if (message && message.user_id && message.message) {
             dispatch(addMessage(message));
         } else {
