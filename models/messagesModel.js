@@ -20,9 +20,18 @@ const insertMessage = async (chatId, userId, message) => {
 const _getMessagesByChatId = async (chatId) => {
     try {
         const result = await db('messages')
-            .where({ chat_id: chatId })
-            .orderBy('created_at', 'asc')
-            .select('message_id', 'chat_id', 'user_id', 'message', 'created_at');
+            .join('users', 'users.user_id', 'messages.user_id')
+            .where({ 'messages.chat_id': chatId })
+            .orderBy('messages.created_at', 'asc')
+            .select(
+                'messages.message_id',
+                'messages.chat_id',
+                'messages.message',
+                'messages.created_at',
+                'messages.user_id',
+                'users.first_name',
+                'users.last_name'
+            );
         
         return result;
     } catch (error) {

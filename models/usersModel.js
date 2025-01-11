@@ -77,9 +77,23 @@ const _deleteUser = async (email) => {
     }
 };
 
+const getUserById = async (userId) => {
+    try {
+        const user = await db('users')
+            .where({ user_id: userId })
+            .first();
+
+        return user;
+    } catch (error) {
+        console.error("Error fetching user:", error);
+        throw new Error('Error fetching user');
+    }
+};
+
 module.exports = {
     _addNewUser,
     _loginUser,
     _updateUser,
-    _deleteUser
+    _deleteUser,
+    getUserById
 };

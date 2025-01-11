@@ -1,4 +1,5 @@
 const { insertMessage } = require('../models/messagesModel.js');
+const { getUserById } = require('../models/usersModel.js');
 
 const handleSocketEvents = (io, socket) => {
     socket.on('join_chat', ({ chatId }) => {
@@ -9,10 +10,22 @@ const handleSocketEvents = (io, socket) => {
         try {
             const savedMessage = await insertMessage(chatId, userId, message);
 
-            io.to(chatId).emit('receive_message', savedMessage);
+            const user = await getUserById(userId);
+
+            if (!user) {
+                throw new Error(`User with ID ${userId} not found.`);
+            }
+
+            const fullMessage = {
+                ...savedMessage,
+                first_name: user.first_name,
+                last_name: user.last_name,
+            };
+
+            io.to(chatId).emit('receive_message', fullMessage);
         } catch (error) {
-            console.error('Error saving message:', error);
-            socket.emit('error', 'Error saving message');
+            console.error('Error sending message:', error);
+            socket.emit('error', 'Error sending message');
         }
     });
 

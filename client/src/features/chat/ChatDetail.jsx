@@ -41,9 +41,12 @@ const ChatDetail = () => {
             <button onClick={handleBackClick}>Go back</button>
             <h2>Chat ID: {chatId}</h2>
             <div>
-            {messages.map((msg, index) => (
-                <div key={msg.message_id}>
-                    <strong>{msg.user_id === user.userId ? 'You' : `User ${msg.user_id}`}:</strong> {msg.message}
+            {messages.map((msg) => (
+                <div
+                key={msg.message_id}
+                className={msg.user_id === user.userId ? 'myMessage' : 'otherMessage'}
+                >
+                    <span>{msg.user_id === user.userId ? 'You' : `${msg.first_name} ${msg.last_name}`}:</span> {msg.message}
                 </div>
             ))}
             </div>
