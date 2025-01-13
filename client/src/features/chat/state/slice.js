@@ -6,13 +6,13 @@ const CHATS_URL = `${import.meta.env.VITE_API_URL}/chats`;
 const initialState = {
     chats: [],
     chatsStatus: 'idle',
-    addUserStatus: 'idle',
-    removeUserStatus: 'idle',
     editChatStatus: 'idle',
     newChatStatus: 'idle',
     deleteChatStatus: 'idle',
     currentParticipants: [],
     currentParticipantsStatus: 'idle',
+    addUserStatus: 'idle',
+    removeUserStatus: 'idle',
     error: null,
     message: ''
 };
@@ -98,6 +98,51 @@ export const deleteChat = createAsyncThunk('chats/deleteChat', async (chatId, { 
     }
 });
 
+export const getParticipantsByChatId = createAsyncThunk('chats/getParticipantsByChatId', async (chatId, { rejectWithValue }) => {
+    try {
+        const headers = getHeaders();
+
+        const response = await axios.post(
+            `${CHATS_URL}/participants/all`,
+            { chatId },
+            { headers }
+        );
+        return response.data.chatParticipants;
+    } catch (error) {
+        return rejectWithValue(error.response?.data?.message || error.message);
+    }
+});
+
+export const removeUser = createAsyncThunk('chats/removeUser', async ({email, chatId}, { rejectWithValue }) => {
+    try {
+        const headers = getHeaders();
+
+        const response = await axios.post(
+            `${CHATS_URL}/participants/delete`,
+            { email, chatId },
+            { headers }
+        );
+        return response.data.message;
+    } catch (error) {
+        return rejectWithValue(error.response?.data?.message || error.message);
+    }
+});
+
+export const addUser = createAsyncThunk('chats/addUser', async ({email, chatId}, { rejectWithValue }) => {
+    try {
+        const headers = getHeaders();
+
+        const response = await axios.post(
+            `${CHATS_URL}/participants/new`,
+            { email, chatId },
+            { headers }
+        );
+        return response.data.message;
+    } catch (error) {
+        return rejectWithValue(error.response?.data?.message || error.message);
+    }
+});
+
 const chatsSlice = createSlice({
     name: 'chats',
     initialState,
@@ -153,6 +198,32 @@ const chatsSlice = createSlice({
             })
             .addCase(deleteChat.fulfilled, (state, action) => {
                 state.deleteChatStatus = 'success';
+                state.message = action.payload;
+                state.error = null;
+            })
+            .addCase(getParticipantsByChatId.pending, (state) => {
+                state.currentParticipantsStatus = 'loading';
+                state.error = null;
+            })
+            .addCase(getParticipantsByChatId.rejected, (state, action) => {
+                state.currentParticipantsStatus = 'failed';
+                state.error = action.payload;
+            })
+            .addCase(getParticipantsByChatId.fulfilled, (state, action) => {
+                state.currentParticipantsStatus = 'success';
+                state.currentParticipants = action.payload;
+                state.error = null;
+            })
+            .addCase(removeUser.pending, (state) => {
+                state.removeUserStatus = 'loading';
+                state.error = null;
+            })
+            .addCase(removeUser.rejected, (state, action) => {
+                state.removeUserStatus = 'failed';
+                state.error = action.payload;
+            })
+            .addCase(removeUser.fulfilled, (state, action) => {
+                state.removeUserStatus = 'success';
                 state.message = action.payload;
                 state.error = null;
             })
