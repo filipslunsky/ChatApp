@@ -8,7 +8,7 @@ const initialState = {
     chatsStatus: 'idle',
     addUserStatus: 'idle',
     removeUserStatus: 'idle',
-    editChatNameStatus: 'idle',
+    editChatStatus: 'idle',
     newChatStatus: 'idle',
     deleteChatStatus: 'idle',
     currentParticipants: [],
@@ -68,14 +68,24 @@ export const addChat = createAsyncThunk('chats/addChat', async (chatName, { reje
     }
 });
 
-export const deleteChat = createAsyncThunk('chats/deleteChat', async (chatId, { rejectWithValue }) => {
+export const editChat = createAsyncThunk('chats/editChat', async ({chatId, chatName}, { rejectWithValue }) => {
     try {
-        const user = JSON.parse(localStorage.getItem('user'));
         const headers = getHeaders();
 
-        if (!user || !user.email) {
-            throw new Error('User not found in local storage.');
-        }
+        const response = await axios.put(
+            `${CHATS_URL}`,
+            { chatId, chatName },
+            { headers }
+        );
+        return response.data.message;
+    } catch (error) {
+        return rejectWithValue(error.response?.data?.message || error.message);
+    }
+});
+
+export const deleteChat = createAsyncThunk('chats/deleteChat', async (chatId, { rejectWithValue }) => {
+    try {
+        const headers = getHeaders();
 
         const response = await axios.post(
             `${CHATS_URL}/delete`,
@@ -117,6 +127,19 @@ const chatsSlice = createSlice({
             })
             .addCase(addChat.fulfilled, (state, action) => {
                 state.newChatStatus = 'success';
+                state.message = action.payload;
+                state.error = null;
+            })
+            .addCase(editChat.pending, (state) => {
+                state.editChatStatus = 'loading';
+                state.error = null;
+            })
+            .addCase(editChat.rejected, (state, action) => {
+                state.editChatStatus = 'failed';
+                state.error = action.payload;
+            })
+            .addCase(editChat.fulfilled, (state, action) => {
+                state.editChatStatus = 'success';
                 state.message = action.payload;
                 state.error = null;
             })

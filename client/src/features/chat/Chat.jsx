@@ -1,13 +1,11 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
-import { getChats, addChat, deleteChat } from "./state/slice";
+import { getChats, addChat, editChat, deleteChat } from "./state/slice";
 
 const Chat = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-
-    const newChatRef = useRef();
 
     const [newChatName, setNewChatName] = useState('');
     const [editChatName, setEditChatName] = useState('');
@@ -19,10 +17,11 @@ const Chat = () => {
     const chatsStatus = useSelector(state => state.chats.chatsStatus);
     const newChatStatus = useSelector(state => state.chats.newChatStatus);
     const deleteChatStatus = useSelector(state => state.chats.deleteChatStatus);
+    const editChatStatus = useSelector(state => state.chats.editChatStatus);
 
     useEffect(() => {
         dispatch(getChats(user.email));
-    }, [newChatStatus, deleteChatStatus]);
+    }, [newChatStatus, deleteChatStatus, editChatStatus]);
 
     const handleClick = (chatId) => {
         navigate(`/chat/${chatId}`);
@@ -44,8 +43,8 @@ const Chat = () => {
 
     const handleEditChat = (chatId) => {
         if (editChatName.trim() === '') return;
-        console.log(chatId);
-        console.log(editChatName);
+        dispatch(editChat({chatId, chatName: editChatName}));
+        setEditChatId(null);
         setEditChatName('');
     };
 

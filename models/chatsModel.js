@@ -44,7 +44,7 @@ const _updateChatName = async (chatId, chatName) => {
         if (updatedRows === 0) {
             return { success: false, message: 'Chat not found or no changes made' };
         }
-        return { success: true, chatId, chatName };
+        return { success: true, message: 'Chat successfully renamed', chatId, chatName };
     } catch (error) {
         console.error('Transaction error:', error);
         return { success: false, message: `Error changing chat name: ${error.message}` };
