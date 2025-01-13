@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
-import { getChats, addChat } from "./state/slice";
+import { getChats, addChat, deleteChat } from "./state/slice";
 
 const Chat = () => {
     const dispatch = useDispatch();
@@ -13,10 +13,11 @@ const Chat = () => {
     const user = useSelector(state => state.user.user);
     const chatsStatus = useSelector(state => state.chats.chatsStatus);
     const newChatStatus = useSelector(state => state.chats.newChatStatus);
+    const deleteChatStatus = useSelector(state => state.chats.deleteChatStatus);
 
     useEffect(() => {
         dispatch(getChats(user.email));
-    }, [newChatStatus]);
+    }, [newChatStatus, deleteChatStatus]);
 
     const handleClick = (chatId) => {
         navigate(`/chat/${chatId}`);
@@ -26,6 +27,10 @@ const Chat = () => {
         let chatName = newChatRef.current.value;
         dispatch(addChat(chatName));
         newChatRef.current.value = '';
+    };
+
+    const handleRemove = (chatId) => {
+        dispatch(deleteChat(chatId));
     };
 
     return (
@@ -39,8 +44,8 @@ const Chat = () => {
                 :
                 chats.map(item => {
                     return (
-                        <div className="chatItemContainer" key={item.chat_id} onClick={() => {handleClick(item.chat_id)}}>
-                            <p className="chatItemName">
+                        <div className="chatItemContainer" key={item.chat_id}>
+                            <div className="chatItemName" onClick={() => {handleClick(item.chat_id)}}>
                                 {
                                     item.chat_name === null
                                     ?
@@ -48,7 +53,8 @@ const Chat = () => {
                                     :
                                     item.chat_name
                                 }
-                            </p>
+                            </div>
+                            <button onClick={() => {handleRemove(item.chat_id)}}>-</button>
                             <div className="chatParticipantsContainer">
                                 {
                                     item.participants.map((person, index) => {

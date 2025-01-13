@@ -10,6 +10,7 @@ const initialState = {
     removeUserStatus: 'idle',
     editChatNameStatus: 'idle',
     newChatStatus: 'idle',
+    deleteChatStatus: 'idle',
     currentParticipants: [],
     currentParticipantsStatus: 'idle',
     error: null,
@@ -67,6 +68,26 @@ export const addChat = createAsyncThunk('chats/addChat', async (chatName, { reje
     }
 });
 
+export const deleteChat = createAsyncThunk('chats/deleteChat', async (chatId, { rejectWithValue }) => {
+    try {
+        const user = JSON.parse(localStorage.getItem('user'));
+        const headers = getHeaders();
+
+        if (!user || !user.email) {
+            throw new Error('User not found in local storage.');
+        }
+
+        const response = await axios.post(
+            `${CHATS_URL}/delete`,
+            { chatId },
+            { headers }
+        );
+        return response.data.message;
+    } catch (error) {
+        return rejectWithValue(error.response?.data?.message || error.message);
+    }
+});
+
 const chatsSlice = createSlice({
     name: 'chats',
     initialState,
@@ -96,6 +117,19 @@ const chatsSlice = createSlice({
             })
             .addCase(addChat.fulfilled, (state, action) => {
                 state.newChatStatus = 'success';
+                state.message = action.payload;
+                state.error = null;
+            })
+            .addCase(deleteChat.pending, (state) => {
+                state.deleteChatStatus = 'loading';
+                state.error = null;
+            })
+            .addCase(deleteChat.rejected, (state, action) => {
+                state.deleteChatStatus = 'failed';
+                state.error = action.payload;
+            })
+            .addCase(deleteChat.fulfilled, (state, action) => {
+                state.deleteChatStatus = 'success';
                 state.message = action.payload;
                 state.error = null;
             })
