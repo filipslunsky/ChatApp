@@ -8,8 +8,9 @@ import Register from './features/user/Register';
 import Login from './features/user/Login';
 import UserEdit from './features/user/UserEdit';
 import About from './features/general/About';
-import Chat from './features/chat/Chat';
+import Chats from './features/chat/Chats';
 import ChatDetail from './features/chat/ChatDetail';
+import ChatUsers from './features/chat/ChatUsers';
 import './App.css';
 
 function App() {
@@ -27,8 +28,9 @@ function App() {
           <Route element={<ProtectedRoute />}>
             <Route path='/user/info' element={<User />} />
             <Route path='/user/edit' element={<UserEdit />} />
-            <Route path='/chat' element={<Chat />} />
+            <Route path='/chat' element={<Chats />} />
             <Route path='/chat/:chatId' element={<ChatDetail />} />
+            <Route path='/chat-users/:chatId' element={<ChatUsers />} />
           </Route>
         </Routes>
       </BrowserRouter>

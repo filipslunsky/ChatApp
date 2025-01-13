@@ -36,9 +36,14 @@ const ChatDetail = () => {
         navigate('/chat');
     };
 
+    const handleUsersClick = () => {
+        navigate(`/chat-users/${chatId}`);
+    };
+
     return (
         <>
             <button onClick={handleBackClick}>Go back</button>
+            <button onClick={handleUsersClick}>Users</button>
             <h2>Chat ID: {chatId}</h2>
             <div>
             {messages.map((msg) => (

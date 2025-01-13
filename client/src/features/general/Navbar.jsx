@@ -12,7 +12,7 @@ const Navbar = () => {
                     <span className="logoText">ChutUp</span>
                 </div>
                 <div className="navbarContainer">
-                    <Link to={'/chat'} className="navbarItem">Chat</Link>
+                    <Link to={'/chat'} className="navbarItem">Chats</Link>
                     <Link to={'/about'} className="navbarItem">About</Link>
                 </div>
                 <div className="navbarUserContainer">
