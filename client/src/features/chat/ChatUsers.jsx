@@ -9,7 +9,9 @@ const ChatUsers = () => {
 
     const [removeUserId, setRemoveUserId] = useState(null);
     const [newUser, setNewUser] = useState(false);
+    const [clickLeave, setClickLeave] = useState(false);
 
+    const user = useSelector(state => state.user.user);
     const participants = useSelector(state => state.chats.currentParticipants);
     const removeUserStatus = useSelector(state => state.chats.removeUserStatus);
     const addUserStatus = useSelector(state => state.chats.addUserStatus);
@@ -52,6 +54,19 @@ const ChatUsers = () => {
         dispatch(removeUser({email, chatId}));
     };
 
+    const handleClickLeave = () => {
+        setClickLeave(true);
+    };
+
+    const handleClickNoLeave = () => {
+        setClickLeave(false);
+    };
+
+    const handleLeave = () => {
+        dispatch(removeUser({email: user.email, chatId}));
+        navigate('/chat');
+    };
+
     return (
         <>
             <button onClick={handleBackClick}>Go back</button>
@@ -67,10 +82,22 @@ const ChatUsers = () => {
                 :
                 <button onClick={handleClickNewUser}>add a new user</button>
             }
-            <button>leave chat</button>
+            {
+                clickLeave
+                ?
+                <div>
+                    <p>Are you sure you want to leave this chat?</p>
+                    <button onClick={handleLeave}>yes</button>
+                    <button onClick={handleClickNoLeave}>no</button>
+                </div>
+                :
+                <button onClick={handleClickLeave}>leave chat</button>
+            }
             {
                 participants.map(item => {
                     return (
+                        item.email !== user.email
+                        ?
                         <div key={item.user_id}>
                             <span>{`${item.first_name} ${item.last_name}`}</span>
                             {
@@ -85,6 +112,8 @@ const ChatUsers = () => {
                                 <button onClick={() => {handleClickRemove(item.user_id)}}>x</button>
                             }
                         </div>
+                        :
+                        ''
                     )
                 })
             }
