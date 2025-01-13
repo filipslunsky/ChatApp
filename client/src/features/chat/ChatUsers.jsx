@@ -1,25 +1,43 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getParticipantsByChatId, removeUser } from "./state/slice.js";
+import { getParticipantsByChatId, removeUser, addUser } from "./state/slice.js";
 
 const ChatUsers = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
     const [removeUserId, setRemoveUserId] = useState(null);
+    const [newUser, setNewUser] = useState(false);
 
     const participants = useSelector(state => state.chats.currentParticipants);
     const removeUserStatus = useSelector(state => state.chats.removeUserStatus);
+    const addUserStatus = useSelector(state => state.chats.addUserStatus);
 
     const { chatId } = useParams();
 
+    const emailRef = useRef();
+
     useEffect(() => {
         dispatch(getParticipantsByChatId(chatId));
-    }, [removeUserStatus]);
+    }, [removeUserStatus, addUserStatus]);
 
     const handleBackClick = () => {
         navigate(`/chat/${chatId}`);
+    };
+
+    const handleClickNewUser = () => {
+        setNewUser(true);
+    };
+
+    const handleCancelNewUser = () => {
+        setNewUser(false);
+    };
+
+    const handleAddNewUser = () => {
+        const email = emailRef.current.value;
+        dispatch(addUser({email, chatId}));
+        setNewUser(false);
     };
 
     const handleClickRemove = (userId) => {
@@ -38,7 +56,17 @@ const ChatUsers = () => {
         <>
             <button onClick={handleBackClick}>Go back</button>
             <h2>Users for Chat ID: {chatId}</h2>
-            <button>add a new user</button>
+            {
+                newUser
+                ?
+                <div>
+                    <input type="text" placeholder="email address" ref={emailRef} />
+                    <button onClick={handleAddNewUser}>add</button>
+                    <button onClick={handleCancelNewUser}>cancel</button>
+                </div>
+                :
+                <button onClick={handleClickNewUser}>add a new user</button>
+            }
             <button>leave chat</button>
             {
                 participants.map(item => {

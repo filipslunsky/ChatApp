@@ -227,6 +227,19 @@ const chatsSlice = createSlice({
                 state.message = action.payload;
                 state.error = null;
             })
+            .addCase(addUser.pending, (state) => {
+                state.addUserStatus = 'loading';
+                state.error = null;
+            })
+            .addCase(addUser.rejected, (state, action) => {
+                state.addUserStatus = 'failed';
+                state.error = action.payload;
+            })
+            .addCase(addUser.fulfilled, (state, action) => {
+                state.addUserStatus = 'success';
+                state.message = action.payload;
+                state.error = null;
+            })
     },
 });
 
