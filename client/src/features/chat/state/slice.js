@@ -13,6 +13,7 @@ const initialState = {
     currentParticipants: [],
     currentParticipantsStatus: 'idle',
     error: null,
+    message: ''
 };
 
 const getHeaders = () => {
@@ -43,6 +44,29 @@ export const getChats = createAsyncThunk('chats/getChats', async (_, { rejectWit
     }
 });
 
+export const addChat = createAsyncThunk('chats/addChat', async (chatName, { rejectWithValue }) => {
+    try {
+        const user = JSON.parse(localStorage.getItem('user'));
+        const headers = getHeaders();
+
+        if (!user || !user.email) {
+            throw new Error('User not found in local storage.');
+        }
+
+        const response = await axios.post(
+            `${CHATS_URL}/new`,
+            {
+                email: user.email,
+                chatName: chatName
+            },
+            { headers }
+        );
+        return response.data.message;
+    } catch (error) {
+        return rejectWithValue(error.response?.data?.message || error.message);
+    }
+});
+
 const chatsSlice = createSlice({
     name: 'chats',
     initialState,
@@ -61,7 +85,20 @@ const chatsSlice = createSlice({
                 state.chatsStatus = 'success';
                 state.chats = action.payload;
                 state.error = null;
-            });
+            })
+            .addCase(addChat.pending, (state) => {
+                state.newChatStatus = 'loading';
+                state.error = null;
+            })
+            .addCase(addChat.rejected, (state, action) => {
+                state.newChatStatus = 'failed';
+                state.error = action.payload;
+            })
+            .addCase(addChat.fulfilled, (state, action) => {
+                state.newChatStatus = 'success';
+                state.message = action.payload;
+                state.error = null;
+            })
     },
 });
 
