@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
 import { getChats, addChat, deleteChat } from "./state/slice";
@@ -8,6 +8,11 @@ const Chat = () => {
     const navigate = useNavigate();
 
     const newChatRef = useRef();
+
+    const [newChatName, setNewChatName] = useState('');
+    const [editChatName, setEditChatName] = useState('');
+    const [editChatId, setEditChatId] = useState(null);
+    const [removeChatId, setRemoveChatId] = useState(null);
     
     const chats = useSelector(state => state.chats.chats);
     const user = useSelector(state => state.user.user);
@@ -24,9 +29,32 @@ const Chat = () => {
     };
 
     const handleAddChat = () => {
-        let chatName = newChatRef.current.value;
-        dispatch(addChat(chatName));
-        newChatRef.current.value = '';
+        if (newChatName.trim() === '') return;
+        dispatch(addChat(newChatName));
+        setNewChatName('');
+    };
+
+    const handleEditClick = (chatId) => {
+        setEditChatId(chatId);
+    };
+
+    const handleEditCancel = () => {
+        setEditChatId(null);
+    };
+
+    const handleEditChat = (chatId) => {
+        if (editChatName.trim() === '') return;
+        console.log(chatId);
+        console.log(editChatName);
+        setEditChatName('');
+    };
+
+    const handleRemoveClick = (chatId) => {
+        setRemoveChatId(chatId);
+    };
+
+    const handleRemoveCancel = () => {
+        setRemoveChatId(null);
     };
 
     const handleRemove = (chatId) => {
@@ -35,7 +63,7 @@ const Chat = () => {
 
     return (
         <>
-            <input type="text" ref={newChatRef} placeholder="new chat name" />
+            <input type="text" value={newChatName} onChange={(e) => {setNewChatName(e.target.value)}} placeholder="new chat name" />
             <button onClick={handleAddChat}>add</button>
             {
                 chatsStatus !== 'success'
@@ -49,12 +77,33 @@ const Chat = () => {
                                 {
                                     item.chat_name === null
                                     ?
-                                    'Direct Chat'
+                                    'Unnamed Chat'
                                     :
                                     item.chat_name
                                 }
                             </div>
-                            <button onClick={() => {handleRemove(item.chat_id)}}>-</button>
+                            {
+                                editChatId === item.chat_id
+                                ?
+                                <div>
+                                    <input type="text" onChange={(e) => {setEditChatName(e.target.value)}} defaultValue={item.chat_name} />
+                                    <button onClick={handleEditCancel}>x</button>
+                                    <button onClick={() => {handleEditChat(item.chat_id)}}>ok</button>
+                                </div>
+                                :
+                                <button onClick={() => {handleEditClick(item.chat_id)}}>edit</button>
+                            }
+                            {
+                                removeChatId === item.chat_id
+                                ?
+                                <div>
+                                    <span>Are you sure?</span>
+                                    <button onClick={() => {handleRemove(item.chat_id)}}>yes</button>
+                                    <button onClick={handleRemoveCancel}>no</button>
+                                </div>
+                                :
+                                <button onClick={() => {handleRemoveClick(item.chat_id)}}>remove</button>
+                            }
                             <div className="chatParticipantsContainer">
                                 {
                                     item.participants.map((person, index) => {
