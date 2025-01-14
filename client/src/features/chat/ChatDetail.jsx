@@ -32,6 +32,12 @@ const ChatDetail = () => {
         setNewMessage('');
     };
 
+    const handleKeyPress = (e) => {
+        if (e.key === 'Enter') {
+            handleSendMessage();
+        }
+    };
+
     const handleBackClick = () => {
         navigate('/chat');
     };
@@ -59,6 +65,7 @@ const ChatDetail = () => {
                 type="text"
                 value={newMessage}
                 onChange={(e) => setNewMessage(e.target.value)}
+                onKeyDown={handleKeyPress}
                 placeholder="Type a message"
             />
             <button onClick={handleSendMessage}>Send</button>
