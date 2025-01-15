@@ -5,7 +5,8 @@ const {
     _addNewUser,
     _loginUser,
     _updateUser,
-    _deleteUser
+    _deleteUser,
+    _updateProfilePicture,
 } = require('../models/usersModel.js');
 
 dotenv.config();
@@ -83,9 +84,28 @@ const deleteUser = async (req, res) => {
     }
 };
 
+const updateProfilePicture = async (req, res) => {
+    const { email } = req.body;
+    const file = req.file;
+
+    if (!file) {
+        return res.status(400).json({ error: 'No file uploaded' });
+    }
+
+    try {
+        const profilePicturePath = `/uploads/${file.filename}`;
+        await _updateProfilePicture(email, profilePicturePath);
+        res.status(200).json({ message: 'Profile picture updated', profilePicture: profilePicturePath });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Failed to update profile picture' });
+    }
+};
+
 module.exports = {
     addNewUser,
     loginUser,
     updateUser,
-    deleteUser
+    deleteUser,
+    updateProfilePicture
 };

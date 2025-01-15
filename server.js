@@ -27,6 +27,8 @@ app.get("*", (req, res) => {
 
 configureSocketIO(server);
 
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 server.listen(PORT, () => {
     console.log(`listening to port ${PORT}`);
 });
