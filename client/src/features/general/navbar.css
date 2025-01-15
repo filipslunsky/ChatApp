@@ -2,3 +2,8 @@
     display: flex;
     justify-content: space-evenly;
 }
+
+.navbarProfilePicture {
+    height: 30px;
+    border-radius: 15px;
+}

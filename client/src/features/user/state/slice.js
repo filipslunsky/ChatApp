@@ -9,6 +9,7 @@ const initialState = {
         lastName: '',
         email: '',
         userId: null,
+        profilePicture: '',
     },
     token: null,
     loggedIn: false,
@@ -110,6 +111,22 @@ export const deleteUser = createAsyncThunk('user/delete', async (deleteItem, { r
     }
 });
 
+export const uploadProfilePicture = createAsyncThunk(
+    'user/uploadProfilePicture',
+    async (formData, thunkAPI) => {
+        try {
+            const response = await axios.post(`${USER_URL}/upload-profile-picture`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+            return response.data;
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error.response.data);
+        }
+    }
+);
+
 const userSlice = createSlice({
     name: 'user',
     initialState: loadUserFromLocalStorage(),
@@ -167,15 +184,26 @@ const userSlice = createSlice({
             .addCase(editUser.fulfilled, (state, action) => {
                 state.editStatus = 'success';
                 state.user = {
-                    firstName: action.payload.firstName || state.user.firstName || '',
-                    lastName: action.payload.lastName || state.user.lastName || '',
-                    email: state.user.email || '',
+                    firstName: action.payload.firstName || state.user.firstName,
+                    lastName: action.payload.lastName || state.user.lastName,
+                    email: state.user.email,
                 };
+            })
+            .addCase(uploadProfilePicture.fulfilled, (state, action) => {
+                state.user.profilePicture = action.payload.profilePicture;
+                const storedUser = JSON.parse(localStorage.getItem('user'));
+                localStorage.setItem('user', JSON.stringify({
+                    ...storedUser,
+                    profilePicture: action.payload.profilePicture,
+                }));
+            })
+            .addCase(uploadProfilePicture.rejected, (state, action) => {
+                console.error('Failed to upload profile picture:', action.payload);
             })
             .addCase(deleteUser.rejected, (state, action) => {
                 state.logMessage = action.payload || 'Failed to delete user';
                 console.error('Delete user failed:', action.payload);
-            });
+            })
     },
 });
 

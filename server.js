@@ -20,14 +20,18 @@ app.use('/user', usersRouter);
 app.use('/chats', chatsRouter);
 app.use('/messages', messagesRouter);
 
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/uploads', (req, res, next) => {
+    console.log(`Requesting file: ${req.url}`);
+    next();
+});
+
 app.use(express.static(path.join(__dirname, "/client/dist")));
 app.get("*", (req, res) => {
     res.sendFile(path.resolve(__dirname, "./client/build", "index.html"));
 });
 
 configureSocketIO(server);
-
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 server.listen(PORT, () => {
     console.log(`listening to port ${PORT}`);
