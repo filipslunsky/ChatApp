@@ -25,6 +25,10 @@ const handleSocketEvents = (io, socket) => {
             const { chatId, userId, message } = data;
             let photoPath = null;
 
+            console.log(`chatId: ${chatId}`);
+            console.log(`userId: ${userId}`);
+            console.log(`message: ${message}`);
+
             if (data.photo) {
                 const fileBuffer = data.photo;
                 const fileName = `photo-${Date.now()}-${Math.round(Math.random() * 1e9)}.jpg`;

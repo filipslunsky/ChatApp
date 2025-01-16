@@ -93,7 +93,7 @@ export const initializeSocket = (chatId) => (dispatch) => {
     socket.off('error');
 
     socket.on('receive_message', (message) => {
-        if (message && message.user_id && message.message) {
+        if (message && message.user_id && (message.message || message.photo_path)) {
             dispatch(addMessage(message));
         } else {
             console.error('Received invalid message:', message);
@@ -105,9 +105,9 @@ export const initializeSocket = (chatId) => (dispatch) => {
     });
 };
 
-export const sendMessage = (chatId, message, userId) => () => {
+export const sendMessage = (chatId, message, userId, photo = null) => () => {
     if (socket) {
-        socket.emit('send_message', { chatId, message, userId });
+        socket.emit('send_message', { chatId, message, userId, photo });
     }
 };
 
