@@ -32,8 +32,8 @@ const _loginUser = async (email) => {
             if (!userExists) {
                 return { success: false, password: null, message: 'User does not exist' };
             }
-            const user = await trx('users').select('first_name','last_name', 'email', 'password', 'user_id').where({ email }).first();
-            return { success: true, firstName: user.first_name, lastName: user.last_name, email: user.email, password: user.password, userId: user.user_id };
+            const user = await trx('users').select('first_name','last_name', 'email', 'password', 'user_id', 'profile_picture').where({ email }).first();
+            return { success: true, firstName: user.first_name, lastName: user.last_name, email: user.email, password: user.password, userId: user.user_id, profilePicture: user.profile_picture };
         });
     } catch (error) {
         console.error('Transaction error:', error);

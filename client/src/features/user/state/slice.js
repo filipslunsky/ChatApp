@@ -154,6 +154,7 @@ const userSlice = createSlice({
                     lastName: action.payload.lastName,
                     email: action.payload.email,
                     userId: action.payload.userId,
+                    profilePicture: action.payload.profilePicture,
                 };
                 state.token = action.payload.token;
                 state.loggedIn = true;

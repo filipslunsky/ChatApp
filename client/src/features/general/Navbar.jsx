@@ -1,9 +1,11 @@
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import avatar from '../../assets/img/avatar.jpg';
 import './navbar.css';
 
 const Navbar = () => {
     const user = useSelector(state => state.user.user);
+    console.log(user);
 
     const BASE_URL = `${import.meta.env.VITE_API_URL}`;
 
@@ -20,7 +22,7 @@ const Navbar = () => {
                 <div className="navbarUserContainer">
                 <Link to={'/user/info'} className="navbarItem">
                     {`${user.firstName} ${user.lastName}`}
-                    <img className="navbarProfilePicture" src={`${BASE_URL}${user.profilePicture}`} alt="profile picture" />
+                        <img className="navbarProfilePicture" src={user.profilePicture ? `${BASE_URL}${user.profilePicture}` : avatar} alt="photo" />
                 </Link>
                 </div>
             </div>
