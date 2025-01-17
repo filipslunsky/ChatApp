@@ -50,12 +50,12 @@ export const loginUser = createAsyncThunk(
         try {
             const response = await axios.post(`${USER_URL}/login`, credentials);
 
-            const { success, passwordMatch, firstName, lastName, email, userId, token } = response.data;
+            const { success, passwordMatch, firstName, lastName, email, userId, profilePicture, token } = response.data;
 
             if (success && passwordMatch) {
-                localStorage.setItem('user', JSON.stringify({ firstName, lastName, email, userId }));
+                localStorage.setItem('user', JSON.stringify({ firstName, lastName, email, userId, profilePicture }));
                 localStorage.setItem('token', token);
-                return { firstName, lastName, email, userId, token, logMessage: 'Logged in successfully' };
+                return { firstName, lastName, email, userId, profilePicture, token, logMessage: 'Logged in successfully' };
             } else if (success && !passwordMatch) {
                 throw new Error('Wrong password');
             } else {

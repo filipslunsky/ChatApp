@@ -5,7 +5,6 @@ import './navbar.css';
 
 const Navbar = () => {
     const user = useSelector(state => state.user.user);
-    console.log(user);
 
     const BASE_URL = `${import.meta.env.VITE_API_URL}`;
 
