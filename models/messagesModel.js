@@ -32,7 +32,8 @@ const _getMessagesByChatId = async (chatId) => {
                 'messages.created_at',
                 'messages.user_id',
                 'users.first_name',
-                'users.last_name'
+                'users.last_name',
+                'users.profile_picture'
             );
         
         return result;

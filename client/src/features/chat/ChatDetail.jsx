@@ -2,6 +2,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { initializeSocket, sendMessage, leaveChat, getMessages } from './state/socketSlice.js';
+import avatar from '../../assets/img/avatar.jpg';
+import './chatDetail.css';
 
 const ChatDetail = () => {
     const navigate = useNavigate();
@@ -9,6 +11,7 @@ const ChatDetail = () => {
 
     const messages = useSelector((state) => state.socket.messages);
     const user = useSelector((state) => state.user.user);
+    const chats = useSelector(state => state.chats.chats);
 
     const [newMessage, setNewMessage] = useState('');
     const [photo, setPhoto] = useState(null);
@@ -76,6 +79,7 @@ const ChatDetail = () => {
                         key={msg.message_id}
                         className={msg.user_id === user.userId ? 'myMessage' : 'otherMessage'}
                     >
+                        <img className="chatDetailProfilePicture" src={msg.profile_picture ? `${BASE_URL}${msg.profile_picture}` : avatar} />
                         <span>{msg.user_id === user.userId ? 'You' : `${msg.first_name} ${msg.last_name}`}:</span>
                         {msg.message ? msg.message : ''}
                         {msg.photo_path ? <img src={`${BASE_URL}${msg.photo_path}`} alt="message photo" /> : ''}
