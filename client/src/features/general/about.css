@@ -1,0 +1,28 @@
+.infoContainer {
+    text-align: center;
+}
+
+.infoHeader {
+    font-size: 30px;
+}
+
+.infoParagraph {
+    font-size: 18px;
+    padding: 20px 40px;
+    line-height: 200%;
+    margin: 5px 30px;
+}
+
+.internalAnchor {
+    display: block;
+    text-decoration: none;
+    font-weight: bold;
+    color: blue;
+}
+
+.externalAnchor {
+    display: block;
+    margin: 20px 10px;
+    text-decoration: none;
+    font-weight: bold;
+}
