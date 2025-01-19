@@ -1,0 +1,45 @@
+.userFormContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.userInputField {
+    width: 230px;
+    text-align: center;
+    height: 25px;
+    font-size: 18px;
+    margin: 5px;
+    border-radius: 10px;
+}
+
+.userConfirmButton, .userCancelButton {
+    color: white;
+    background-color: rgb(0, 157, 255);
+    width: 120px;
+    height: 30px;
+    text-align: center;
+    margin: 10px;
+    font-size: 18px;
+    border: none;
+    border-radius: 5px;
+}
+
+.userConfirmButton:hover, .userCancelButton:hover {
+    background-color: rgb(0, 123, 255);
+    color: white;
+}
+
+.formLink {
+    margin: 10px;
+    padding: 7px;
+    width: 100px;
+    height: 30px;
+    border-radius: 10px;
+    font-size: 20px;
+    text-decoration: none;
+}
+
+.formLink:hover {
+    font-weight: bold;
+}
