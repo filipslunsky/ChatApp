@@ -48,13 +48,13 @@ const User = () => {
                     {
                         !deleteUserClicked
                         ?
-                        <button className="userDeleteButton" onClick={handleClickDelete}>Delete User Account</button>
+                        <button className="userDeleteButton" onClick={handleClickDelete}>Delete Account</button>
                         :
                         <div className="userDeleteContainer">
                             <h4 className="userDeleteQuestion">Are you sure you want to delete your account?</h4>
                             <div className="userDeleteControls">
-                                <button className="userDeleteButtonNo" onClick={handleClickNo}>No, take me back.</button>
-                                <button className="userDeleteButtonYes" onClick={handleClickYes}>Yes, I am sure.</button>
+                                <button className="userCancelButton" onClick={handleClickNo}>No, take me back.</button>
+                                <button className="userDeleteButton" onClick={handleClickYes}>Yes, I am sure.</button>
                             </div>
                         </div>
                     }

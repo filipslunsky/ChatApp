@@ -13,21 +13,44 @@
     border-radius: 10px;
 }
 
-.userConfirmButton, .userCancelButton {
+.userConfirmButton, .userCancelButton, .userDeleteButton {
     color: white;
-    background-color: rgb(0, 157, 255);
-    width: 120px;
+    width: 160px;
     height: 30px;
     text-align: center;
     margin: 10px;
     font-size: 18px;
     border: none;
     border-radius: 5px;
+    cursor: pointer;
 }
 
-.userConfirmButton:hover, .userCancelButton:hover {
-    background-color: rgb(0, 123, 255);
-    color: white;
+.userConfirmButton {
+    background-color: rgb(44, 100, 44);
+}
+
+.userCancelButton {
+    background-color: rgb(165, 165, 17);
+}
+
+.userDeleteButton {
+    background-color: rgb(170, 48, 48);
+}
+
+.userConfirmButton:hover {
+    background-color: rgb(37, 159, 37);
+}
+
+.userCancelButton:hover {
+    background-color: rgb(230, 230, 21);
+}
+
+.userDeleteButton:hover {
+    background-color: rgb(234, 54, 54);
+}
+
+.userDeleteQuestion {
+    color: rgb(170, 48, 48);
 }
 
 .formLink {
@@ -43,3 +66,22 @@
 .formLink:hover {
     font-weight: bold;
 }
+
+.userInfoContainer, .userDeleteContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.userInfoItems {
+    font-size: 18px;
+}
+
+.userPhotoContainer {
+    display: flex;
+    max-width: 400px;
+    align-items: center;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+

@@ -115,10 +115,11 @@ const UserEdit = () => {
                         />
                         {!passwordMatch && <span className="userInputAlert">Passwords don't match</span>}
                     </div>
-                    <div className="userInputContainer">
+                    <div className="userPhotoContainer">
+                        <span>Profile Picture:</span>
                         <input
                             type="file"
-                            className="userInputField"
+                            className="userInputFileField"
                             onChange={(e) => setProfilePicture(e.target.files[0])}
                         />
                     </div>
