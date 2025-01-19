@@ -95,6 +95,7 @@ const _updateProfilePicture = async (email, profilePicturePath) => {
 const getUserById = async (userId) => {
     try {
         const user = await db('users')
+            .select('user_id', 'first_name', 'last_name', 'email', 'profile_picture')
             .where({ user_id: userId })
             .first();
 
