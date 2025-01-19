@@ -2,6 +2,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getParticipantsByChatId, removeUser, addUser, getChats } from "./state/slice.js";
+import avatar from '../../assets/img/avatar.jpg';
 
 const ChatUsers = () => {
     const navigate = useNavigate();
@@ -18,6 +19,8 @@ const ChatUsers = () => {
     const chats = useSelector(state => state.chats.chats);
 
     const { chatId } = useParams();
+
+    const BASE_URL = `${import.meta.env.VITE_API_URL}`;
 
     const emailRef = useRef();
 
@@ -111,6 +114,7 @@ const ChatUsers = () => {
                         ?
                         <div key={item.user_id}>
                             <span>{`${item.first_name} ${item.last_name}`}</span>
+                            <img src={item.profile_picture ? `${BASE_URL}${item.profile_picture}` : avatar} />
                             {
                                 item.user_id === removeUserId
                                 ?

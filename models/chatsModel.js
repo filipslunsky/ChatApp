@@ -170,7 +170,7 @@ const _getParticipantsByChatId = async (chatId) => {
             }
 
             const chatParticipants = await trx('chat_participants')
-                .select('chat_participants.user_id', 'users.first_name', 'users.last_name', 'users.email')
+                .select('chat_participants.user_id', 'users.first_name', 'users.last_name', 'users.email', 'users.profile_picture')
                 .join('users', 'chat_participants.user_id', '=', 'users.user_id')
                 .where({ 'chat_participants.chat_id': chatId });
 
