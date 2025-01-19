@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
 import { getChats, addChat, editChat, deleteChat } from "./state/slice";
+import './chats.css';
 
 const Chat = () => {
     const dispatch = useDispatch();

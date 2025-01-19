@@ -3,6 +3,7 @@ import { useEffect, useState, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getParticipantsByChatId, removeUser, addUser, getChats } from "./state/slice.js";
 import avatar from '../../assets/img/avatar.jpg';
+import './chatUsers.css';
 
 const ChatUsers = () => {
     const navigate = useNavigate();
