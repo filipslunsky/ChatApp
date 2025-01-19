@@ -1,0 +1,21 @@
+.homeContainer {
+    text-align: center;
+    padding-top: 20px;
+}
+
+.homeTitle, .homeText {
+    margin: 40px 20px;
+}
+
+.homeText {
+    font-size: 20px;
+}
+
+.homeLink {
+    font-size: 22px;
+    text-decoration: none;
+}
+
+.homeLink:hover {
+    font-weight: bold;
+}
