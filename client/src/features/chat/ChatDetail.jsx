@@ -2,6 +2,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { initializeSocket, sendMessage, leaveChat, getMessages } from './state/socketSlice.js';
+import { getChats } from "./state/slice.js";
 import avatar from '../../assets/img/avatar.jpg';
 import './chatDetail.css';
 
@@ -23,16 +24,21 @@ const ChatDetail = () => {
     const { chatId } = useParams();
 
     useEffect(() => {
+            dispatch(getChats(user.email));
+        }, []);
+
+    useEffect(() => {
         dispatch(getMessages({ chatId }));
     }, [dispatch, chatId]);
 
     useEffect(() => {
         dispatch(initializeSocket(chatId));
-
         return () => {
             dispatch(leaveChat(chatId));
         };
     }, [dispatch, chatId]);
+
+    const selectedChat = chats.find(chat => chat.chat_id == chatId);
 
     const handleSendMessage = () => {
         if (!newMessage.trim() && !photo) return;
@@ -72,7 +78,11 @@ const ChatDetail = () => {
         <>
             <button onClick={handleBackClick}>Go back</button>
             <button onClick={handleUsersClick}>Users</button>
-            <h2>Chat ID: {chatId}</h2>
+            {selectedChat ? (
+                <h2>{selectedChat.chat_name}</h2>
+                ) : (
+                    <h2>Loading...</h2>
+                )}
             <div>
                 {messages.map((msg) => (
                     <div
