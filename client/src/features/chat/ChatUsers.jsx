@@ -1,7 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getParticipantsByChatId, removeUser, addUser } from "./state/slice.js";
+import { getParticipantsByChatId, removeUser, addUser, getChats } from "./state/slice.js";
 
 const ChatUsers = () => {
     const navigate = useNavigate();
@@ -15,10 +15,17 @@ const ChatUsers = () => {
     const participants = useSelector(state => state.chats.currentParticipants);
     const removeUserStatus = useSelector(state => state.chats.removeUserStatus);
     const addUserStatus = useSelector(state => state.chats.addUserStatus);
+    const chats = useSelector(state => state.chats.chats);
 
     const { chatId } = useParams();
 
     const emailRef = useRef();
+
+    useEffect(() => {
+        dispatch(getChats(user.email));
+    }, []);
+
+    const selectedChat = chats.find(chat => chat.chat_id == chatId);
 
     useEffect(() => {
         dispatch(getParticipantsByChatId(chatId));
@@ -70,7 +77,11 @@ const ChatUsers = () => {
     return (
         <>
             <button onClick={handleBackClick}>Go back</button>
-            <h2>Users for Chat ID: {chatId}</h2>
+            {selectedChat ? (
+                <h2>{selectedChat.chat_name}</h2>
+                ) : (
+                    <h2>Loading...</h2>
+                )}
             {
                 newUser
                 ?
