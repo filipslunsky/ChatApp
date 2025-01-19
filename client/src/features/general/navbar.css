@@ -1,9 +1,59 @@
 .navbarMainContainer {
     display: flex;
     justify-content: space-evenly;
+    align-items: center;
+    height: 50px;
+}
+
+.logoContainer {
+    height: 100%;
+    cursor: default;
+    font-size: 23px;
+    display: flex;
+    align-items: center;
+}
+
+.navbarContainer {
+    display: flex;
+    width: 25%;
+    justify-content: center;
+}
+
+.navbarItem {
+    margin: 0 10px;
+    font-size: 20px;
+    text-decoration: none;
+}
+
+.navbarItem:hover {
+    font-weight: bold;
+}
+
+.navbarUserContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;  
+}
+
+.navbarUsername {
+    font-size: 18px;
+    margin-right: 10px;
 }
 
 .navbarProfilePicture {
-    height: 30px;
-    border-radius: 15px;
+    max-height: 36px;
+    max-width: 36px;
+    border-radius: 18px;
+}
+
+@media (max-width: 575px) {
+    .navbarUsername {
+        display: none;
+    }
+
+    .navbarItem:last-child {
+        display: none;
+    }
+
 }

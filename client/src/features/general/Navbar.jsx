@@ -18,12 +18,10 @@ const Navbar = () => {
                     <Link to={'/chat'} className="navbarItem">Chats</Link>
                     <Link to={'/about'} className="navbarItem">About</Link>
                 </div>
-                <div className="navbarUserContainer">
-                <Link to={'/user/info'} className="navbarItem">
-                    {`${user.firstName} ${user.lastName}`}
-                        <img className="navbarProfilePicture" src={user.profilePicture ? `${BASE_URL}${user.profilePicture}` : avatar} alt="photo" />
+                <Link to={'/user/info'} className="navbarUserContainer">
+                    <span className="navbarUsername">{`${user.firstName} ${user.lastName}`}</span>
+                    <img className="navbarProfilePicture" src={user.profilePicture ? `${BASE_URL}${user.profilePicture}` : avatar} alt="photo" />
                 </Link>
-                </div>
             </div>
         </>
     );

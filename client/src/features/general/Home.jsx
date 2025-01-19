@@ -9,7 +9,7 @@ const Home = () => {
 
     useEffect(() => {
         if (loggedIn) {
-            navigate('/user/info');
+            navigate('/chat');
             return;
         };
     }, [])
