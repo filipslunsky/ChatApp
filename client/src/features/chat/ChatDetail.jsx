@@ -4,6 +4,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { initializeSocket, sendMessage, leaveChat, getMessages } from './state/socketSlice.js';
 import { getChats } from "./state/slice.js";
 import avatar from '../../assets/img/avatar.jpg';
+import mobilePhone from '../../assets/img/mobile_phone.png';
+import backArrow from '../../assets/img/arrow-back.png';
 import './chatDetail.css';
 
 const ChatDetail = () => {
@@ -76,41 +78,46 @@ const ChatDetail = () => {
 
     return (
         <>
-            <button onClick={handleBackClick}>Go back</button>
-            <button onClick={handleUsersClick}>Users</button>
-            {selectedChat ? (
-                <h2>{selectedChat.chat_name}</h2>
-                ) : (
-                    <h2>Loading...</h2>
-                )}
-            <div>
-                {messages.map((msg) => (
-                    <div
-                        key={msg.message_id}
-                        className={msg.user_id === user.userId ? 'myMessage' : 'otherMessage'}
-                    >
-                        <img className="chatDetailProfilePicture" src={msg.profile_picture ? `${BASE_URL}${msg.profile_picture}` : avatar} />
-                        <span>{msg.user_id === user.userId ? 'You' : `${msg.first_name} ${msg.last_name}`}:</span>
-                        {msg.message ? msg.message : ''}
-                        {msg.photo_path ? <img src={`${BASE_URL}${msg.photo_path}`} alt="message photo" /> : ''}
-                    </div>
-                ))}
+            <div className="detailBackground"></div>
+            <img className="phoneImage" src={mobilePhone} alt="phone" />
+            <div className="chatDetailControlls">
+                <button className="chatBackButton" onClick={handleBackClick}><img className="backArrowImage" src={backArrow} alt="arrow" /></button>
+                {selectedChat ? (
+                    <h2 className="chatDetailTitle" onClick={handleUsersClick}>{selectedChat.chat_name}</h2>
+                    ) : (
+                        <h2 className="chatDetailTitle">Loading...</h2>
+                    )}
             </div>
-            <div>
-                <input
-                    type="text"
-                    value={newMessage}
-                    onChange={(e) => setNewMessage(e.target.value)}
-                    onKeyDown={handleKeyPress}
-                    placeholder="Type a message"
-                />
-                <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleFileChange}
-                    ref={photoInputRef}
-                />
-                <button onClick={handleSendMessage}>Send</button>
+            <div className="chatDetailContent">
+                <div>
+                    {messages.map((msg) => (
+                        <div
+                            key={msg.message_id}
+                            className={msg.user_id === user.userId ? 'myMessage' : 'otherMessage'}
+                        >
+                            <img className="chatDetailProfilePicture" src={msg.profile_picture ? `${BASE_URL}${msg.profile_picture}` : avatar} />
+                            <span>{msg.user_id === user.userId ? 'You' : `${msg.first_name} ${msg.last_name}`}:</span>
+                            {msg.message ? msg.message : ''}
+                            {msg.photo_path ? <img className="chatImageSent" src={`${BASE_URL}${msg.photo_path}`} alt="message photo" /> : ''}
+                        </div>
+                    ))}
+                </div>
+            </div>
+            <div className="sendMessageContainer">
+                    <input
+                        type="text"
+                        value={newMessage}
+                        onChange={(e) => setNewMessage(e.target.value)}
+                        onKeyDown={handleKeyPress}
+                        placeholder="Type a message"
+                    />
+                    <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleFileChange}
+                        ref={photoInputRef}
+                    />
+                    <button onClick={handleSendMessage}>Send</button>
             </div>
         </>
     );

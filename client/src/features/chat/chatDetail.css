@@ -1,3 +1,64 @@
+.detailBackground {
+    width: 36%;
+    height: 600px;
+    background-color: blueviolet;
+    border-radius: 0 0 200px 200px;
+}
+
+.phoneImage {
+    position: absolute;
+    top: 130px;
+    left: 30%;
+    height: 450px;
+    background-color: white;
+    border-radius: 35px;
+}
+
+.chatDetailControlls {
+    position: absolute;
+    top: 156px;
+    left: 31.1%;
+    display: flex;
+    background-color: blueviolet;
+    height: 40px;
+    width: 195px;
+    border-radius: 8px 8px 0 0;
+}
+
+.chatBackButton {
+    border: none;
+    background-color: inherit;
+    cursor: pointer;
+    border-radius: 8px 0 0 0;
+}
+
+.backArrowImage {
+    background-color: inherit;
+    height: 18px;
+}
+
+.chatDetailTitle {
+    color: white;
+    padding: 7px 0 0 10px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.chatDetailContent {
+    position: absolute;
+    top: 210px;
+    left: 32%;
+}
+
 .chatDetailProfilePicture {
-    height: 25px;
+    max-height: 18px;
+    max-width: 18px;
+    border-radius: 9px;
+    padding: 0 5px;
+}
+
+.chatImageSent {
+    max-width: 40px;
+    max-height: 40px;
+    border-radius: 10px;
 }
