@@ -2,7 +2,9 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getParticipantsByChatId, removeUser, addUser, getChats } from "./state/slice.js";
+import mobilePhone from '../../assets/img/phone_color.png';
 import avatar from '../../assets/img/avatar.jpg';
+import backArrow from '../../assets/img/arrow-back.png';
 import './chatUsers.css';
 
 const ChatUsers = () => {
@@ -80,34 +82,43 @@ const ChatUsers = () => {
 
     return (
         <>
-            <button onClick={handleBackClick}>Go back</button>
-            {selectedChat ? (
-                <h2>{selectedChat.chat_name}</h2>
-                ) : (
-                    <h2>Loading...</h2>
+            <div className="detailBackground"></div>
+            <img className="phoneImage" src={mobilePhone} alt="phone" />
+            <div className="usersMainControlsContainer">
+                <button className="usersBackButton" onClick={handleBackClick}><img className="backArrowImage" src={backArrow} alt="arrow" /></button>
+                {selectedChat ? (
+                    <h2 className="usersChatName">{selectedChat.chat_name}</h2>
+                    ) : (
+                        <h2>Loading...</h2>
                 )}
-            {
-                newUser
-                ?
-                <div>
-                    <input type="text" placeholder="email address" ref={emailRef} />
-                    <button onClick={handleAddNewUser}>add</button>
-                    <button onClick={handleCancelNewUser}>cancel</button>
-                </div>
-                :
-                <button onClick={handleClickNewUser}>add a new user</button>
-            }
-            {
-                clickLeave
-                ?
-                <div>
-                    <p>Are you sure you want to leave this chat?</p>
-                    <button onClick={handleLeave}>yes</button>
-                    <button onClick={handleClickNoLeave}>no</button>
-                </div>
-                :
-                <button onClick={handleClickLeave}>leave chat</button>
-            }
+            </div>
+            <div className="newUserContainer">
+                {
+                    newUser
+                    ?
+                    <div>
+                        <input type="text" placeholder="email address" ref={emailRef} />
+                        <button onClick={handleAddNewUser}>add</button>
+                        <button onClick={handleCancelNewUser}>cancel</button>
+                    </div>
+                    :
+                    <button onClick={handleClickNewUser}>add a new user</button>
+                }
+            </div>
+            <div className="leaveChatContainer">
+                {
+                    clickLeave
+                    ?
+                    <div>
+                        <p>Are you sure you want to leave this chat?</p>
+                        <button onClick={handleLeave}>yes</button>
+                        <button onClick={handleClickNoLeave}>no</button>
+                    </div>
+                    :
+                    <button onClick={handleClickLeave}>leave chat</button>
+                }
+            </div>
+            <div className="chatUsersListContainer">
             {
                 participants.map(item => {
                     return (
@@ -115,7 +126,7 @@ const ChatUsers = () => {
                         ?
                         <div key={item.user_id}>
                             <span>{`${item.first_name} ${item.last_name}`}</span>
-                            <img src={item.profile_picture ? `${BASE_URL}${item.profile_picture}` : avatar} />
+                            <img className="usersProfilePicture" src={item.profile_picture ? `${BASE_URL}${item.profile_picture}` : avatar} />
                             {
                                 item.user_id === removeUserId
                                 ?
@@ -133,6 +144,13 @@ const ChatUsers = () => {
                     )
                 })
             }
+            </div>
+            <div className="rightContainer">
+                <h2 className="rightContainerheading">Chut Up</h2>
+                <p className="rightContainerParagraph">
+                    Talk to your friends, send photos and more. Add your friends. It is simple, free and moreover everybody can add, remove chat members or delete the history so you can always be sure, your data is under your control.
+                </p>
+            </div>
         </>
     );
 }

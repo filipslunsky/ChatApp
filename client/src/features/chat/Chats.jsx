@@ -129,6 +129,12 @@ const Chat = () => {
                 <input type="text" value={newChatName} onChange={(e) => {setNewChatName(e.target.value)}} placeholder="new chat name" />
                 <button onClick={handleAddChat}>add</button>
             </div>
+            <div className="rightContainer">
+                <h2 className="rightContainerheading">Chut Up</h2>
+                <p className="rightContainerParagraph">
+                    Talk to your friends, send photos and more. Add your friends. It is simple, free and moreover everybody can add, remove chat members or delete the history so you can always be sure, your data is under your control.
+                </p>
+            </div>
         </>
     );
 }
