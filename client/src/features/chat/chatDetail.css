@@ -276,4 +276,91 @@
     }
 }
 
-@media (max-width: 375px) {}
+@media (min-width: 376px) and (max-width: 599px) {
+    .chatDetailControlls {
+        left: 34%;
+    }
+
+    .chatDetailContent {
+        left: 32.2%;
+    }
+
+    .sendMessageContainer {
+        left: 33.3%;
+    }
+
+    .rightContainer {
+        left: 13%;
+        top: 580px;
+        width: 70%;
+    }
+
+    .photoDetailContainer {
+        left: 20%;
+    }
+
+    .detailBackground {
+        width: 40%;
+        height: 550px;
+        position: absolute;
+        top: -550px;
+    }
+    
+    @keyframes slideDown {
+        0% {
+            top: -550px;
+        }
+        100% {
+            top: 0;
+        }
+    }
+}
+
+@media (max-width: 375px) {
+    .chatDetailControlls {
+        left: 23%;
+        top: 82px;
+    }
+
+    .chatDetailContent {
+        left: 21.5%;
+        top: 124px;
+    }
+
+    .sendMessageContainer {
+        left: 21%;
+        top: 454px;
+    }
+
+    .rightContainer {
+        left: 13%;
+        top: 510px;
+        width: 90%;
+    }
+
+    .photoDetailContainer {
+        left: 20%;
+    }
+
+    .phoneImage {
+        left: 17%;
+        top: 55px;
+    }
+
+    .detailBackground {
+        width: 50%;
+        border-radius: 0 0 100px 0;
+        height: 520px;
+        position: absolute;
+        top: -520px;
+    }
+    
+    @keyframes slideDown {
+        0% {
+            top: -520px;
+        }
+        100% {
+            top: 0;
+        }
+    }
+}
