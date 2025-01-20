@@ -2,7 +2,7 @@
     width: 36%;
     height: 650px;
     background-image: linear-gradient(to right, hsl(293, 100%, 63%), hsl(264, 100%, 61%));
-    border-radius: 0 0 200px 200px;
+    border-radius: 0 0 300px 300px;
     position: absolute;
     top: -650px;
     animation: slideDown 1s ease-out forwards;
@@ -191,4 +191,5 @@
 .rightContainerParagraph {
     color: hsl(270, 7%, 64%);
     line-height: 150%;
+    padding-right: 35px;
 }
