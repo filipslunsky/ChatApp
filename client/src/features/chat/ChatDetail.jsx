@@ -19,6 +19,7 @@ const ChatDetail = () => {
 
     const [newMessage, setNewMessage] = useState('');
     const [photo, setPhoto] = useState(null);
+    const [photoOpen, setPhotoOpen] = useState(null);
 
     const photoInputRef = useRef(null);
     const scrollContainerRef = useRef(null);
@@ -52,6 +53,22 @@ const ChatDetail = () => {
             dispatch(leaveChat(chatId));
         };
     }, [dispatch, chatId]);
+
+    useEffect(() => {
+        const handleKeyDown = (e) => {
+            if (e.key === 'Escape') {
+                handleClosePhoto();
+            }
+        };
+    
+        if (photoOpen) {
+            document.addEventListener('keydown', handleKeyDown);
+        }
+    
+        return () => {
+            document.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [photoOpen]);
 
     const selectedChat = chats.find(chat => chat.chat_id == chatId);
 
@@ -89,10 +106,18 @@ const ChatDetail = () => {
         }
     };
 
+    const handleOpenPhoto = (path) => {
+        setPhotoOpen(path);
+    };
+
+    const handleClosePhoto = () => {
+        setPhotoOpen(null);
+    };
+
     return (
         <>
-            <div className="detailBackground"></div>
-            <img className="phoneImage" src={mobilePhone} alt="phone" />
+            <div className={photoOpen ? 'detailBackground blurred' : 'detailBackground'}></div>
+            <img className={photoOpen ? "phoneImage blurred" : "phoneImage"} src={mobilePhone} alt="phone" />
             <div className="chatDetailControlls">
                 <button className="chatBackButton" onClick={handleBackClick}><img className="backArrowImage" src={backArrow} alt="arrow" /></button>
                 {selectedChat ? (
@@ -101,7 +126,7 @@ const ChatDetail = () => {
                         <h2 className="chatDetailTitle">Loading...</h2>
                     )}
             </div>
-            <div className="chatDetailContent" ref={scrollContainerRef}>
+            <div className={photoOpen ? "chatDetailContent blurred" : "chatDetailContent"} ref={scrollContainerRef}>
                 {messages.map((msg) => (
                     <div
                         key={msg.message_id}
@@ -113,12 +138,12 @@ const ChatDetail = () => {
                                 <span className="chatDetailSenderName">{msg.user_id === user.userId ? 'You' : `${msg.first_name} ${msg.last_name}`}</span>
                             </div>
                             <p className="chatDetailMessageText">{msg.message ? msg.message : ''}</p>
-                            {msg.photo_path ? <img className="chatImageSent" src={`${BASE_URL}${msg.photo_path}`} alt="message photo" /> : ''}
+                            {msg.photo_path ? <img onClick={() => {handleOpenPhoto(msg.photo_path)}} className="chatImageSent" src={`${BASE_URL}${msg.photo_path}`} alt="message photo" /> : ''}
                         </div>
                     </div>
                 ))}
             </div>
-            <div className="sendMessageContainer">
+            <div className={photoOpen ? "sendMessageContainer blurred" : "sendMessageContainer"}>
                     <input
                         className="sendMessageInput"
                         type="text"
@@ -145,12 +170,22 @@ const ChatDetail = () => {
                 </div>
                     <button className="sendMessageButton" onClick={handleSendMessage}><img className="fwdArrowImage" src={fwdArrow} alt="fwd arrow" /></button>
             </div>
-            <div className="rightContainer">
+            <div className={photoOpen ? "rightContainer blurred" : "rightContainer"}>
                 <h2 className="rightContainerheading">Chut Up</h2>
                 <p className="rightContainerParagraph">
                     Talk to your friends, send photos and more. Add your friends. It is simple, free and moreover everybody can add, remove chat members or delete the history so you can always be sure, your data is under your control.
                 </p>
             </div>
+            {
+                photoOpen
+                ?
+                <div className="photoDetailContainer">
+                    <img className="photoDetail" src={`${BASE_URL}${photoOpen}`} alt="photo detail" />
+                    <button className="closePhotoDetailButton" onClick={handleClosePhoto}>X</button>
+                </div>
+                :
+                ''
+            }
         </>
     );
 };
