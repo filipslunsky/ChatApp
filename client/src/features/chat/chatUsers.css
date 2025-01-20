@@ -16,8 +16,146 @@
     cursor: pointer;
 }
 
+.leaveChatContainer {
+    position: absolute;
+    z-index: 2;
+    top: 172px;
+    left: 33%;
+    width: 170px;
+}
+
+.leaveButton {
+    border: none;
+    background-color: inherit;
+    cursor: pointer;
+    color:  hsl(271, 36%, 24%);
+}
+
+.leaveButton:hover {
+    color: rgb(170, 48, 48);
+    font-weight: bold;
+}
+
+.confirmContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.yesNoContainer {
+    display: flex;
+    width: 60%;
+    justify-content: space-around;
+}
+
+.confirmQuestion {
+    font-size: 12px;
+    text-align: center;
+    padding-bottom: 5px;
+    color: rgb(170, 48, 48);
+}
+
+.yesButton, .noButton {
+    border: none;
+    background-color: inherit;
+    cursor: pointer;
+}
+
+.yesButton:hover, .noButton:hover {
+    font-weight: bold;
+}
+
+.yesButton {
+    color: rgb(170, 48, 48);
+}
+
+.noButton {
+    color: rgb(165, 165, 17);
+}
+
+.chatUsersListContainer {
+    position: absolute;
+    z-index: 2;
+    top: 225px;
+    left: 32%;
+    width: 180px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    height: 250px;
+    width: 180px;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.chatUsersListContainer::-webkit-scrollbar {
+    display: none;
+}
+
+.chatUserSingleContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
 .usersProfilePicture {
-    max-width: 20px;
-    max-height: 20px;
-    border-radius: 10px;
+    max-width: 50px;
+    max-height: 50px;
+    border-radius: 25px;
+    margin: 10px;
+}
+
+.newUserContainer {
+    position: absolute;
+    z-index: 2;
+    top: 500px;
+    left: 32%;
+    width: 180px;
+    display: flex;
+    justify-content: center;
+}
+
+.addUserButton {
+    border: none;
+    color: hsl(271, 36%, 24%);
+}
+
+.addUserButton:hover {
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.addUserInput {
+    width: 100px;
+    height: 20px;
+    padding-left: 5px;
+    border-radius: 5px;
+    font-size: 15px;
+    border: none;
+    background-color: white;
+}
+
+.addUserInput:focus {
+    outline: none;
+}
+
+.addUserButtonAdd, .addUserButtonCancel {
+    height: 20px;
+    background-color: inherit;
+    border: none;
+    cursor: pointer;
+    margin: 5px;
+    font-size: 15px;
+}
+
+.addUserButtonAdd {
+    color: rgb(44, 100, 44);
+}
+
+.addUserButtonCancel {
+    color: rgb(165, 165, 17);
+}
+
+.addUserButtonAdd:hover, .addUserButtonCancel:hover {
+    font-weight: bold;
 }

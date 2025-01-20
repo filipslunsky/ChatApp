@@ -53,6 +53,7 @@ const ChatUsers = () => {
         const email = emailRef.current.value;
         dispatch(addUser({email, chatId}));
         setNewUser(false);
+        setRemoveUserId(null);
     };
 
     const handleClickRemove = (userId) => {
@@ -92,30 +93,19 @@ const ChatUsers = () => {
                         <h2>Loading...</h2>
                 )}
             </div>
-            <div className="newUserContainer">
-                {
-                    newUser
-                    ?
-                    <div>
-                        <input type="text" placeholder="email address" ref={emailRef} />
-                        <button onClick={handleAddNewUser}>add</button>
-                        <button onClick={handleCancelNewUser}>cancel</button>
-                    </div>
-                    :
-                    <button onClick={handleClickNewUser}>add a new user</button>
-                }
-            </div>
             <div className="leaveChatContainer">
                 {
                     clickLeave
                     ?
-                    <div>
-                        <p>Are you sure you want to leave this chat?</p>
-                        <button onClick={handleLeave}>yes</button>
-                        <button onClick={handleClickNoLeave}>no</button>
+                    <div className="confirmContainer">
+                        <p className="confirmQuestion">Are you sure you want to leave this chat?</p>
+                        <div className="yesNoContainer">
+                            <button className="yesButton" onClick={handleLeave}>yes</button>
+                            <button className="noButton" onClick={handleClickNoLeave}>no</button>
+                        </div>
                     </div>
                     :
-                    <button onClick={handleClickLeave}>leave chat</button>
+                    <button className="leaveButton" onClick={handleClickLeave}>X leave this chat</button>
                 }
             </div>
             <div className="chatUsersListContainer">
@@ -124,19 +114,21 @@ const ChatUsers = () => {
                     return (
                         item.email !== user.email
                         ?
-                        <div key={item.user_id}>
-                            <span>{`${item.first_name} ${item.last_name}`}</span>
+                        <div className="chatUserSingleContainer" key={item.user_id}>
+                            <span className="chatUserName">{`${item.first_name} ${item.last_name}`}</span>
                             <img className="usersProfilePicture" src={item.profile_picture ? `${BASE_URL}${item.profile_picture}` : avatar} />
                             {
                                 item.user_id === removeUserId
                                 ?
-                                <div>
-                                    <p>Are you sure you want to remove {`${item.first_name} ${item.last_name}`} from this chat?</p>
-                                    <button onClick={() => {handleRemove(item.email)}}>yes</button>
-                                    <button onClick={handleClickNoRemove}>no</button>
+                                <div className="confirmContainer">
+                                    <p className="confirmQuestion">Are you sure you want to remove {`${item.first_name} ${item.last_name}`} from this chat?</p>
+                                    <div className="yesNoContainer">
+                                        <button className="yesButton" onClick={() => {handleRemove(item.email)}}>yes</button>
+                                        <button className="noButton" onClick={handleClickNoRemove}>no</button>
+                                    </div>
                                 </div>
                                 :
-                                <button onClick={() => {handleClickRemove(item.user_id)}}>x</button>
+                                <button className="leaveButton" onClick={() => {handleClickRemove(item.user_id)}}>remove</button>
                             }
                         </div>
                         :
@@ -144,6 +136,19 @@ const ChatUsers = () => {
                     )
                 })
             }
+            </div>
+            <div className="newUserContainer">
+                {
+                    newUser
+                    ?
+                    <div>
+                        <input className="addUserInput" type="text" placeholder="email address" ref={emailRef} />
+                        <button  className="addUserButtonAdd" onClick={handleAddNewUser}>add</button>
+                        <button className="addUserButtonCancel" onClick={handleCancelNewUser}>X</button>
+                    </div>
+                    :
+                    <button className="addUserButton" onClick={handleClickNewUser}>+ add a user</button>
+                }
             </div>
             <div className="rightContainer">
                 <h2 className="rightContainerheading">Chut Up</h2>
