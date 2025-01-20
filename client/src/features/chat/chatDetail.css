@@ -1,7 +1,7 @@
 .detailBackground {
     width: 36%;
     height: 650px;
-    background-color: blueviolet;
+    background-image: linear-gradient(to right, hsl(293, 100%, 63%), hsl(264, 100%, 61%));
     border-radius: 0 0 200px 200px;
     position: absolute;
     top: -650px;
@@ -24,14 +24,15 @@
     height: 450px;
     background-color: white;
     border-radius: 35px;
+    box-shadow: 3px 3px 3px gray;
 }
 
 .chatDetailControlls {
     position: absolute;
     top: 126px;
-    left: 31.1%;
+    left: 32%;
     display: flex;
-    background-color: blueviolet;
+    background: inherit;
     height: 40px;
     width: 195px;
     border-radius: 8px 8px 0 0;
@@ -46,7 +47,7 @@
 
 .backArrowImage, .fwdArrowImage {
     background-color: inherit;
-    height: 18px;
+    height: 13px;
 }
 
 .chatDetailTitle {
@@ -58,7 +59,7 @@
 
 .chatDetailContent {
     position: absolute;
-    top: 167px;
+    top: 169px;
     left: 31.2%;
     overflow-y: scroll;
     overflow-x: hidden;
@@ -98,14 +99,14 @@
     align-items: flex-start;
     margin-right: 45px;
     margin-left: 8px;
-    background-color: beige;
+    background-color: hsl(276, 100%, 81%);
 }
 
 .myMessage {
     align-items: flex-end;
     margin-right: 8px;
     margin-left: 45px;
-    background-color: ivory;
+    background-color: hsl(206, 6%, 79%);
 }
 
 .messageInnerContainer {
@@ -140,6 +141,7 @@
     border-radius: 10px;
     border: none;
     width: 120px;
+    height: 25px;
     padding-left: 8px;
 }
 
@@ -162,13 +164,31 @@
 }
 
 .sendMessageButton {
-    width: 30px;
-    height: 30px;
+    width: 25px;
+    height: 25px;
     border-radius: 15px;
     border: none;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: background-color 0.3s;
     cursor: pointer;
-    background-color: gray;
+    background-color: hsl(271, 36%, 24%);
+    padding-top: 3px;
+    padding-left: 2px;
 }
 
+.rightContainer {
+    width: 35%;
+    position: absolute;
+    top: 230px;
+    left: 60%;
+}
+
+.rightContainerheading {
+    color: hsl(271, 36%, 24%);
+    margin-bottom: 12px;
+}
+
+.rightContainerParagraph {
+    color: hsl(270, 7%, 64%);
+    line-height: 150%;
+}

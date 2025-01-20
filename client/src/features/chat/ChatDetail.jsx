@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { initializeSocket, sendMessage, leaveChat, getMessages } from './state/socketSlice.js';
 import { getChats } from "./state/slice.js";
 import avatar from '../../assets/img/avatar.jpg';
-import mobilePhone from '../../assets/img/mobile_phone.png';
+import mobilePhone from '../../assets/img/phone_color.png';
 import backArrow from '../../assets/img/arrow-back.png';
 import fwdArrow from '../../assets/img/arrow-front.png';
 import './chatDetail.css';
@@ -144,6 +144,12 @@ const ChatDetail = () => {
                         </button>
                 </div>
                     <button className="sendMessageButton" onClick={handleSendMessage}><img className="fwdArrowImage" src={fwdArrow} alt="fwd arrow" /></button>
+            </div>
+            <div className="rightContainer">
+                <h2 className="rightContainerheading">Chut Up</h2>
+                <p className="rightContainerParagraph">
+                    Talk to your friends, send photos and more. Add your friends. It is simple, free and moreover everybody can add, remove chat members or delete the history so you can always be sure, your data is under your control.
+                </p>
             </div>
         </>
     );
