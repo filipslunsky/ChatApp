@@ -32,7 +32,7 @@
     border-radius: 8px 0 0 0;
 }
 
-.backArrowImage {
+.backArrowImage, .fwdArrowImage {
     background-color: inherit;
     height: 18px;
 }
@@ -46,11 +46,11 @@
 
 .chatDetailContent {
     position: absolute;
-    top: 210px;
+    top: 197px;
     left: 31.2%;
     overflow-y: scroll;
     overflow-x: hidden;
-    height: 310px;
+    height: 326px;
     width: 190px;
     -ms-overflow-style: none;
     scrollbar-width: none;
@@ -72,3 +72,92 @@
     max-height: 40px;
     border-radius: 10px;
 }
+
+.myMessage, .otherMessage {
+    font-size: 14px;
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+    padding: 4px;
+    border-radius: 10px;
+}
+
+.otherMessage {
+    align-items: flex-start;
+    margin-right: 45px;
+    margin-left: 8px;
+    background-color: beige;
+}
+
+.myMessage {
+    align-items: flex-end;
+    margin-right: 8px;
+    margin-left: 45px;
+    background-color: ivory;
+}
+
+.messageInnerContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.chatDetailSenderContainer {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+    font-size: 12px;
+    color: gray
+}
+
+.chatDetailMessageText {
+    margin: 3px;
+    font-size: 13px;
+}
+
+.sendMessageContainer {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    left: 31.3%;
+    top: 525px;
+}
+
+.sendMessageInput {
+    border-radius: 10px;
+    border: none;
+    width: 120px;
+    padding-left: 8px;
+}
+
+.sendMessageInput:focus {
+    outline: none;
+}
+
+.customFileButton {
+    color: gray;
+    font-size: 20px;
+    border: none;
+    border-radius: 15px;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s;
+}
+
+.sendMessageButton {
+    width: 30px;
+    height: 30px;
+    border-radius: 15px;
+    border: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s;
+    cursor: pointer;
+    background-color: gray;
+}
+

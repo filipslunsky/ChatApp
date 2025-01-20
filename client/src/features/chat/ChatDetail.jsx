@@ -6,6 +6,7 @@ import { getChats } from "./state/slice.js";
 import avatar from '../../assets/img/avatar.jpg';
 import mobilePhone from '../../assets/img/mobile_phone.png';
 import backArrow from '../../assets/img/arrow-back.png';
+import fwdArrow from '../../assets/img/arrow-front.png';
 import './chatDetail.css';
 
 const ChatDetail = () => {
@@ -106,28 +107,43 @@ const ChatDetail = () => {
                         key={msg.message_id}
                         className={msg.user_id === user.userId ? 'myMessage' : 'otherMessage'}
                     >
-                        <img className="chatDetailProfilePicture" src={msg.profile_picture ? `${BASE_URL}${msg.profile_picture}` : avatar} />
-                        <span>{msg.user_id === user.userId ? 'You' : `${msg.first_name} ${msg.last_name}`}:</span>
-                        {msg.message ? msg.message : ''}
-                        {msg.photo_path ? <img className="chatImageSent" src={`${BASE_URL}${msg.photo_path}`} alt="message photo" /> : ''}
+                        <div className="messageInnerContainer">
+                            <div className="chatDetailSenderContainer">
+                                <img className="chatDetailProfilePicture" src={msg.profile_picture ? `${BASE_URL}${msg.profile_picture}` : avatar} />
+                                <span className="chatDetailSenderName">{msg.user_id === user.userId ? 'You' : `${msg.first_name} ${msg.last_name}`}</span>
+                            </div>
+                            <p className="chatDetailMessageText">{msg.message ? msg.message : ''}</p>
+                            {msg.photo_path ? <img className="chatImageSent" src={`${BASE_URL}${msg.photo_path}`} alt="message photo" /> : ''}
+                        </div>
                     </div>
                 ))}
             </div>
             <div className="sendMessageContainer">
                     <input
+                        className="sendMessageInput"
                         type="text"
                         value={newMessage}
                         onChange={(e) => setNewMessage(e.target.value)}
                         onKeyDown={handleKeyPress}
                         placeholder="Type a message"
                     />
-                    <input
-                        type="file"
-                        accept="image/*"
-                        onChange={handleFileChange}
-                        ref={photoInputRef}
-                    />
-                    <button onClick={handleSendMessage}>Send</button>
+                    <div className="fileInputContainer">
+                        <input
+                            type="file"
+                            accept="image/*"
+                            onChange={handleFileChange}
+                            ref={photoInputRef}
+                            id="fileInput"
+                            style={{ display: 'none' }} // Hide the file input
+                        />
+                        <button
+                            className="customFileButton"
+                            onClick={() => photoInputRef.current.click()} // Trigger file input click
+                        >
+                            +
+                        </button>
+                </div>
+                    <button className="sendMessageButton" onClick={handleSendMessage}><img className="fwdArrowImage" src={fwdArrow} alt="fwd arrow" /></button>
             </div>
         </>
     );
