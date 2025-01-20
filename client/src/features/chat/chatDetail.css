@@ -231,3 +231,49 @@
     filter: blur(10px);
     filter: brightness(30%);
 }
+
+@media (min-width: 900px) and (max-width: 1200px) {
+    .chatDetailControlls {
+        left: 32%;
+    }
+
+    .chatDetailContent {
+        left: 31%;
+    }
+
+    .sendMessageContainer {
+        left: 31.5%;
+    }
+
+    .rightContainer {
+        left: 63%;
+    }
+
+    .photoDetailContainer {
+        left: 20%;
+    }
+}
+
+@media (min-width: 600px) and (max-width: 899px) {
+    .chatDetailControlls {
+        left: 33%;
+    }
+
+    .chatDetailContent {
+        left: 31.5%;
+    }
+
+    .sendMessageContainer {
+        left: 32%;
+    }
+
+    .rightContainer {
+        left: 68%;
+    }
+
+    .photoDetailContainer {
+        left: 20%;
+    }
+}
+
+@media (max-width: 375px) {}

@@ -10,7 +10,7 @@
     position: absolute;
     z-index: 2;
     top: 169px;
-    left: 32%;
+    left: 31.5%;
     width: 187px;
     height: 310px;
     overflow-y: scroll;
@@ -138,3 +138,7 @@
 .addChatButton:hover {
     font-weight: bold;
 }
+
+@media (min-width: 768px) and (max-width: 1023px) {}
+
+@media (max-width: 767px) {}
