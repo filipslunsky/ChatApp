@@ -12,15 +12,95 @@
     top: 169px;
     left: 32%;
     width: 187px;
-    height: 330px;
+    height: 310px;
     overflow-y: scroll;
     overflow-x: hidden;
     -ms-overflow-style: none;
     scrollbar-width: none;
+    padding-top: 10px;
+}
+
+.chatItemContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 90%;
+    margin-top: 15px;
+    border-radius: 10px;
+    background-color: hsl(276, 100%, 81%);
+    padding: 8px 0;
+
+}
+
+.chatItemName {
+    font-weight: normal;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.chatItemName:hover {
+    font-weight: bold;
 }
 
 .chatListContainer::-webkit-scrollbar {
     display: none;
+}
+
+.editChatButton {
+    border: none;
+    color: rgb(159, 159, 24);
+    cursor: pointer;
+    background-color: inherit;
+}
+
+.editChatButton:hover {
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.chatEditInput {
+    width: 130px;
+    height: 20px;
+    padding-left: 5px;
+    border-radius: 5px;
+    font-size: 15px;
+    border: none;
+    background-color: white;
+}
+
+.chatEditInput:focus {
+    outline: none;
+}
+
+.chatEditConfirm, .chatEditCancel {
+    height: 20px;
+    background-color: inherit;
+    border: none;
+    cursor: pointer;
+    margin: 5px;
+    font-size: 15px;
+}
+
+.chatEditConfirm {
+    color: rgb(44, 100, 44);
+}
+
+.chatEditCancel {
+    color: rgb(165, 165, 17);
+}
+
+.chatEditConfirm:hover, .chatEditCancel:hover {
+    font-weight: bold;
+}
+
+.chatParticipantsContainer {
+    margin-top: 10px;
+}
+
+.chatParticipant {
+    display: block;
+    font-size: 12px;
+    font-style: italic;
 }
 
 .addChatContainer {
@@ -29,4 +109,32 @@
     top: 499px;
     left: 32%;
     width: 187px;
+}
+
+.addChatInput {
+    width: 130px;
+    height: 20px;
+    padding-left: 5px;
+    border-radius: 5px;
+    font-size: 15px;
+    border: none;
+    background-color: white;
+}
+
+.addChatInput:focus {
+    outline: none;
+}
+
+.addChatButton {
+    height: 20px;
+    background-color: inherit;
+    border: none;
+    cursor: pointer;
+    margin-left: 5px;
+    font-size: 15px;
+    color: rgb(44, 100, 44);
+}
+
+.addChatButton:hover {
+    font-weight: bold;
 }

@@ -88,24 +88,26 @@ const Chat = () => {
                                 {
                                     editChatId === item.chat_id
                                     ?
-                                    <div>
-                                        <input type="text" onChange={(e) => {setEditChatName(e.target.value)}} defaultValue={item.chat_name} />
-                                        <button onClick={handleEditCancel}>x</button>
-                                        <button onClick={() => {handleEditChat(item.chat_id)}}>ok</button>
+                                    <div className="chatEditContainer">
+                                        <input className="chatEditInput" type="text" onChange={(e) => {setEditChatName(e.target.value)}} defaultValue={item.chat_name} />
+                                        <button className="chatEditCancel" onClick={handleEditCancel}>x</button>
+                                        <button className="chatEditConfirm" onClick={() => {handleEditChat(item.chat_id)}}>ok</button>
                                     </div>
                                     :
-                                    <button onClick={() => {handleEditClick(item.chat_id)}}>edit</button>
+                                    <button className="editChatButton" onClick={() => {handleEditClick(item.chat_id)}}>edit chat name</button>
                                 }
                                 {
                                     removeChatId === item.chat_id
                                     ?
-                                    <div>
-                                        <span>Are you sure?</span>
-                                        <button onClick={() => {handleRemove(item.chat_id)}}>yes</button>
-                                        <button onClick={handleRemoveCancel}>no</button>
+                                    <div className="confirmContainer">
+                                        <span className="confirmQuestion">Are you sure?</span>
+                                        <div className="yesNoContainer">
+                                            <button className="yesButton" onClick={() => {handleRemove(item.chat_id)}}>yes</button>
+                                            <button className="noButton" onClick={handleRemoveCancel}>no</button>
+                                        </div>
                                     </div>
                                     :
-                                    <button onClick={() => {handleRemoveClick(item.chat_id)}}>remove</button>
+                                    <button className="leaveButton" onClick={() => {handleRemoveClick(item.chat_id)}}>delete chat</button>
                                 }
                                 <div className="chatParticipantsContainer">
                                     {
@@ -126,8 +128,8 @@ const Chat = () => {
                 }
             </div>
             <div className="addChatContainer">
-                <input type="text" value={newChatName} onChange={(e) => {setNewChatName(e.target.value)}} placeholder="new chat name" />
-                <button onClick={handleAddChat}>add</button>
+                <input className="addChatInput" type="text" value={newChatName} onChange={(e) => {setNewChatName(e.target.value)}} placeholder="new chat name" />
+                <button className="addChatButton" onClick={handleAddChat}>add</button>
             </div>
             <div className="rightContainer">
                 <h2 className="rightContainerheading">Chut Up</h2>
