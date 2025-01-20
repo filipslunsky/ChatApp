@@ -1,13 +1,25 @@
 .detailBackground {
     width: 36%;
-    height: 600px;
+    height: 650px;
     background-color: blueviolet;
     border-radius: 0 0 200px 200px;
+    position: absolute;
+    top: -650px;
+    animation: slideDown 1s ease-out forwards;
+}
+
+@keyframes slideDown {
+    0% {
+        top: -650px;
+    }
+    100% {
+        top: 0;
+    }
 }
 
 .phoneImage {
     position: absolute;
-    top: 130px;
+    top: 100px;
     left: 30%;
     height: 450px;
     background-color: white;
@@ -16,7 +28,7 @@
 
 .chatDetailControlls {
     position: absolute;
-    top: 156px;
+    top: 126px;
     left: 31.1%;
     display: flex;
     background-color: blueviolet;
@@ -46,7 +58,7 @@
 
 .chatDetailContent {
     position: absolute;
-    top: 197px;
+    top: 167px;
     left: 31.2%;
     overflow-y: scroll;
     overflow-x: hidden;
@@ -121,7 +133,7 @@
     align-items: center;
     position: absolute;
     left: 31.3%;
-    top: 525px;
+    top: 495px;
 }
 
 .sendMessageInput {
@@ -146,8 +158,7 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: background-color 0.3s;
+    background-color: inherit;
 }
 
 .sendMessageButton {

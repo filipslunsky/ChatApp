@@ -134,11 +134,11 @@ const ChatDetail = () => {
                             onChange={handleFileChange}
                             ref={photoInputRef}
                             id="fileInput"
-                            style={{ display: 'none' }} // Hide the file input
+                            style={{ display: 'none' }}
                         />
                         <button
                             className="customFileButton"
-                            onClick={() => photoInputRef.current.click()} // Trigger file input click
+                            onClick={() => photoInputRef.current.click()}
                         >
                             +
                         </button>
