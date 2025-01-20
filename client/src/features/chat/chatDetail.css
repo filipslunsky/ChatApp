@@ -47,7 +47,17 @@
 .chatDetailContent {
     position: absolute;
     top: 210px;
-    left: 32%;
+    left: 31.2%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    height: 310px;
+    width: 190px;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.chatDetailContent::-webkit-scrollbar {
+    display: none;
 }
 
 .chatDetailProfilePicture {

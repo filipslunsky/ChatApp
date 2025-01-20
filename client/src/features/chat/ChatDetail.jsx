@@ -20,10 +20,22 @@ const ChatDetail = () => {
     const [photo, setPhoto] = useState(null);
 
     const photoInputRef = useRef(null);
+    const scrollContainerRef = useRef(null);
 
     const BASE_URL = `${import.meta.env.VITE_API_URL}`;
 
     const { chatId } = useParams();
+
+    const scrollToBottom = () => {
+        const scrollContainer = scrollContainerRef.current;
+        if (scrollContainer) {
+            scrollContainer.scrollTop = scrollContainer.scrollHeight;
+        }
+    };
+
+    useEffect(() => {
+        scrollToBottom();
+    }, [messages]);
 
     useEffect(() => {
             dispatch(getChats(user.email));
@@ -88,20 +100,18 @@ const ChatDetail = () => {
                         <h2 className="chatDetailTitle">Loading...</h2>
                     )}
             </div>
-            <div className="chatDetailContent">
-                <div>
-                    {messages.map((msg) => (
-                        <div
-                            key={msg.message_id}
-                            className={msg.user_id === user.userId ? 'myMessage' : 'otherMessage'}
-                        >
-                            <img className="chatDetailProfilePicture" src={msg.profile_picture ? `${BASE_URL}${msg.profile_picture}` : avatar} />
-                            <span>{msg.user_id === user.userId ? 'You' : `${msg.first_name} ${msg.last_name}`}:</span>
-                            {msg.message ? msg.message : ''}
-                            {msg.photo_path ? <img className="chatImageSent" src={`${BASE_URL}${msg.photo_path}`} alt="message photo" /> : ''}
-                        </div>
-                    ))}
-                </div>
+            <div className="chatDetailContent" ref={scrollContainerRef}>
+                {messages.map((msg) => (
+                    <div
+                        key={msg.message_id}
+                        className={msg.user_id === user.userId ? 'myMessage' : 'otherMessage'}
+                    >
+                        <img className="chatDetailProfilePicture" src={msg.profile_picture ? `${BASE_URL}${msg.profile_picture}` : avatar} />
+                        <span>{msg.user_id === user.userId ? 'You' : `${msg.first_name} ${msg.last_name}`}:</span>
+                        {msg.message ? msg.message : ''}
+                        {msg.photo_path ? <img className="chatImageSent" src={`${BASE_URL}${msg.photo_path}`} alt="message photo" /> : ''}
+                    </div>
+                ))}
             </div>
             <div className="sendMessageContainer">
                     <input
