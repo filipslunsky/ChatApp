@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
 import { getChats, addChat, editChat, deleteChat } from "./state/slice";
+import mobilePhone from '../../assets/img/phone_color.png';
 import './chats.css';
 
 const Chat = () => {
@@ -63,64 +64,71 @@ const Chat = () => {
 
     return (
         <>
-            <input type="text" value={newChatName} onChange={(e) => {setNewChatName(e.target.value)}} placeholder="new chat name" />
-            <button onClick={handleAddChat}>add</button>
-            {
-                chatsStatus !== 'success'
-                ?
-                <p>Loading chats...</p>
-                :
-                chats.map(item => {
-                    return (
-                        <div className="chatItemContainer" key={item.chat_id}>
-                            <div className="chatItemName" onClick={() => {handleClick(item.chat_id)}}>
+            <div className="detailBackground"></div>
+            <img className="phoneImage" src={mobilePhone} alt="phone" />
+            <h2 className="chatsHeading">My Chats</h2>
+            <div className="chatListContainer">
+                {
+                    chatsStatus !== 'success'
+                    ?
+                    <p>Loading chats...</p>
+                    :
+                    chats.map(item => {
+                        return (
+                            <div className="chatItemContainer" key={item.chat_id}>
+                                <div className="chatItemName" onClick={() => {handleClick(item.chat_id)}}>
+                                    {
+                                        item.chat_name === null
+                                        ?
+                                        'Unnamed Chat'
+                                        :
+                                        item.chat_name
+                                    }
+                                </div>
                                 {
-                                    item.chat_name === null
+                                    editChatId === item.chat_id
                                     ?
-                                    'Unnamed Chat'
+                                    <div>
+                                        <input type="text" onChange={(e) => {setEditChatName(e.target.value)}} defaultValue={item.chat_name} />
+                                        <button onClick={handleEditCancel}>x</button>
+                                        <button onClick={() => {handleEditChat(item.chat_id)}}>ok</button>
+                                    </div>
                                     :
-                                    item.chat_name
+                                    <button onClick={() => {handleEditClick(item.chat_id)}}>edit</button>
                                 }
-                            </div>
-                            {
-                                editChatId === item.chat_id
-                                ?
-                                <div>
-                                    <input type="text" onChange={(e) => {setEditChatName(e.target.value)}} defaultValue={item.chat_name} />
-                                    <button onClick={handleEditCancel}>x</button>
-                                    <button onClick={() => {handleEditChat(item.chat_id)}}>ok</button>
-                                </div>
-                                :
-                                <button onClick={() => {handleEditClick(item.chat_id)}}>edit</button>
-                            }
-                            {
-                                removeChatId === item.chat_id
-                                ?
-                                <div>
-                                    <span>Are you sure?</span>
-                                    <button onClick={() => {handleRemove(item.chat_id)}}>yes</button>
-                                    <button onClick={handleRemoveCancel}>no</button>
-                                </div>
-                                :
-                                <button onClick={() => {handleRemoveClick(item.chat_id)}}>remove</button>
-                            }
-                            <div className="chatParticipantsContainer">
                                 {
-                                    item.participants.map((person, index) => {
-                                        return (
-                                            person.email !== user.email
-                                            ?
-                                            <span className="chatParticipant" key={index}>{`${person.first_name} ${person.last_name}`}</span>
-                                            :
-                                            ''
-                                        )
-                                    })
+                                    removeChatId === item.chat_id
+                                    ?
+                                    <div>
+                                        <span>Are you sure?</span>
+                                        <button onClick={() => {handleRemove(item.chat_id)}}>yes</button>
+                                        <button onClick={handleRemoveCancel}>no</button>
+                                    </div>
+                                    :
+                                    <button onClick={() => {handleRemoveClick(item.chat_id)}}>remove</button>
                                 }
+                                <div className="chatParticipantsContainer">
+                                    {
+                                        item.participants.map((person, index) => {
+                                            return (
+                                                person.email !== user.email
+                                                ?
+                                                <span className="chatParticipant" key={index}>{`${person.first_name} ${person.last_name}`}</span>
+                                                :
+                                                ''
+                                            )
+                                        })
+                                    }
+                                </div>
                             </div>
-                        </div>
-                    )
-                })
-            }
+                        )
+                    })
+                }
+            </div>
+            <div className="addChatContainer">
+                <input type="text" value={newChatName} onChange={(e) => {setNewChatName(e.target.value)}} placeholder="new chat name" />
+                <button onClick={handleAddChat}>add</button>
+            </div>
         </>
     );
 }

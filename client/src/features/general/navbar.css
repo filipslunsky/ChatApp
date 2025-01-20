@@ -45,10 +45,18 @@
     margin-right: 10px;
 }
 
+.navbarUsername:hover {
+    font-weight: bold;
+}
+
 .navbarProfilePicture {
     max-height: 36px;
     max-width: 36px;
     border-radius: 18px;
+}
+
+.navbarProfilePicture:hover {
+    border: 3px solid hsl(271, 36%, 24%);
 }
 
 @media (max-width: 575px) {

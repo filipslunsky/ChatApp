@@ -1,0 +1,32 @@
+.chatsHeading {
+    position: absolute;
+    z-index: 2;
+    top: 132px;
+    left: 35%;
+    color: hsl(271, 36%, 24%);
+}
+
+.chatListContainer {
+    position: absolute;
+    z-index: 2;
+    top: 169px;
+    left: 32%;
+    width: 187px;
+    height: 330px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.chatListContainer::-webkit-scrollbar {
+    display: none;
+}
+
+.addChatContainer {
+    position: absolute;
+    z-index: 2;
+    top: 499px;
+    left: 32%;
+    width: 187px;
+}
